@@ -1,7 +1,16 @@
 import React from 'react';
+import AppRouter from 'Router';
+import Nav from 'components/Nav';
+import Footer from 'components/Footer';
 
 function App() {
-  return <div className="text-blue-500">TailwindCSS setup</div>;
+  return (
+    <>
+      <Nav />
+      <AppRouter />
+      <Footer />
+    </>
+  );
 }
 
 export default App;

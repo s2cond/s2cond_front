@@ -14,6 +14,14 @@ module.exports = {
     },
     colors: {
       transparent: 'transparent',
+      s2condPurple: '#a32eff',
+      s2condPink: '#ff0099',
+      s2condOrage: '#ff5f55',
+      s2condYellow: '#ffe600',
+      s2condLime: '#cdff64',
+      s2condMint: '#2af1b5',
+      bgBlack: '#121',
+      textBlack: '#333',
       black: '#000',
       white: '#fff',
 
@@ -142,6 +150,7 @@ module.exports = {
       8: '2rem',
       10: '2.5rem',
       12: '3rem',
+      15: '3.75rem',
       16: '4rem',
       18: '4.5rem',
       20: '5rem',
@@ -260,6 +269,7 @@ module.exports = {
         '"Segoe UI Symbol"',
         '"Noto Color Emoji"',
       ],
+      monserrat: ['Monserrat', 'sans-selif'],
       serif: ['Georgia', 'Cambria', '"Times New Roman"', 'Times', 'serif'],
       mono: [
         'Menlo',
