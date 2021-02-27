@@ -1,10 +1,11 @@
-import { storageService } from 'fbase';
 import React from 'react';
 import styles from 'scss/pages/Landing.module.scss';
 import fireImg from 'assets/img/fire.png';
 import victoryHandImg from 'assets/img/victoryHand.png';
 import backhandImg from 'assets/img/backhand.png';
-import crystalBallImg from 'assets/img/crystalBall.png';
+import crystalballImg from 'assets/img/crystalball.png';
+import { life } from 'constants/interests';
+import InterestsList from '../components/InterestsList';
 
 const Landing = () => {
   return (
@@ -58,7 +59,7 @@ const Landing = () => {
       <hr className="w-max mx-56 md:mx-40 border-b-1 border-textBlack border-dashed" />
       <div className="mx-56 md:mx-40">
         <div className="flex items-center my-20 font-light text-s2condPurple">
-          <img src={crystalBallImg} alt="crystalBall" className="h-15 mr-24" />
+          <img src={crystalballImg} alt="crystalBall" className="h-15 mr-24" />
           <p className="text-2xl">
             어떤 취향이에요?
             <br />
@@ -69,7 +70,9 @@ const Landing = () => {
             가 궁금해요!
           </p>
         </div>
-        <div></div>
+        <div>
+          <InterestsList {...life} />
+        </div>
       </div>
     </div>
   );
