@@ -17,7 +17,6 @@ const SignUp = () => {
 
     let provider: AuthProvider;
     let user;
-    let token;
     if (name === 'google') {
       provider = new firebaseInstance.auth.GoogleAuthProvider();
     } else {

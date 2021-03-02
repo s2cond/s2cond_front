@@ -18,6 +18,7 @@ const AppRouter = () => {
       setInit(true);
     });
   }, []);
+  console.log(init, userObj);
 
   return (
     <Switch>

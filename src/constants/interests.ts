@@ -2,24 +2,24 @@ export type interestType = {
   kr: string;
   en: string;
 };
-type Keys =
-  | 'name'
-  | 'traveling'
-  | 'outdoor'
-  | 'healthNutrition'
-  | 'pet'
-  | 'chillVibes'
-  | 'stock'
-  | 'foodDrink'
-  | 'veganism'
-  | 'readingMovie'
-  | 'shopping'
-  | 'entrepreneurship'
-  | 'networking'
-  | 'realEstate'
-  | 'wedding'
-  | 'dating'
-  | 'parenting';
+// type Keys =
+//   | 'name'
+//   | 'traveling'
+//   | 'outdoor'
+//   | 'healthNutrition'
+//   | 'pet'
+//   | 'chillVibes'
+//   | 'stock'
+//   | 'foodDrink'
+//   | 'veganism'
+//   | 'readingMovie'
+//   | 'shopping'
+//   | 'entrepreneurship'
+//   | 'networking'
+//   | 'realEstate'
+//   | 'wedding'
+//   | 'dating'
+//   | 'parenting';
 // export type interestsType2 = {
 //   [K in Keys]: interestType;
 // };
