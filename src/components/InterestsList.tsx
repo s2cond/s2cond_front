@@ -2,7 +2,6 @@ import React, { useState } from 'react';
 import { interestType, interestsType } from 'constants/interests';
 import classnames from 'classnames';
 import { interestImg } from '../assets/img/index';
-import { interest } from '../constants/interests';
 
 type colorListType = {
   [key: string]: string;
@@ -25,6 +24,7 @@ type Props = {
 
 const InterestBtn = ({ keyValue, value, color }: Props) => {
   const [clicked, setClicked] = useState(false);
+  const { [keyValue]: imgSrc } = interestImg;
   const onInterestClick = () => {
     setClicked(!clicked);
   };
@@ -32,40 +32,47 @@ const InterestBtn = ({ keyValue, value, color }: Props) => {
     <button
       onClick={onInterestClick}
       className={classnames(
-        `float-left flex justify-center align-middle h-8  border-1 border-textBlack rounded-full pt-1 px-4 mx-1 mb-2  hover:border-${color} active:border-${color}`,
-        { [`border-${color}`]: clicked },
+        `float-left flex justify-center align-middle h-8 border-1 rounded-full pt-1 px-4 mx-1 mb-2 focus:outline-none hover:border-${color} active:border-${color}`,
+        { [`border-${color}`]: clicked, 'border-textBlack': !clicked },
       )}
     >
-      <p className="text-white text-base">{value.kr}</p>
+      <img src={imgSrc} alt="interestBtn" className="mr-1 pt-1" />
+      <p className="text-white text-base font-thin">{value.kr}</p>
     </button>
   );
 };
-const InterestsList = ({ ...data }: interestsType) => {
+const InterestsList: React.FC<interestsType> = ({ ...data }) => {
   const { [data.name.en.toLowerCase()]: colorValue } = colorList;
 
   return (
-    <div className="mb-10 flex items-start">
-      <div
-        className={`flex justify-items-start p-auto w-48 pb-1 text-2xl font-bold text-${colorValue}`}
-      >
-        <p className={`border-b-12 border-${colorValue}`}>{data.name.kr}</p>
-      </div>
-      <div className="inline-block">
-        {Object.entries(data).map(([key, value], i) => {
-          return i > 0 ? (
-            <InterestBtn
-              keyValue={key}
-              value={value}
-              color={colorValue}
-              key={i}
-            />
-          ) : null;
-        })}
+    <>
+      <div className="mb-8 flex items-start">
+        <div className="grid grid-cols-6">
+          <div
+            className={`col-span-1 flex justify-items-start p-auto w-48 pb-1 text-2xl font-bold text-${colorValue}`}
+          >
+            <p className={`h-12 border-b-12 border-${colorValue}`}>
+              {data.name.kr}
+            </p>
+          </div>
+          <div className="col-span-5 inline-block float-right">
+            {Object.entries(data).map(([key, value], i) => {
+              return i > 0 ? (
+                <InterestBtn
+                  keyValue={key}
+                  value={value}
+                  color={colorValue}
+                  key={i}
+                />
+              ) : null;
+            })}
+          </div>
+        </div>
       </div>
       <div>
         <button></button>
       </div>
-    </div>
+    </>
   );
 };
 

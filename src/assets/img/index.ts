@@ -1,5 +1,6 @@
 import ai from 'assets/img/ai.png';
 import animation from 'assets/img/animation.png';
+import architecture from 'assets/img/architecture.png';
 import art from 'assets/img/art.png';
 import babyBoomer from 'assets/img/babyBoomer.png';
 import backhand from 'assets/img/backhand.png';
@@ -11,7 +12,7 @@ import chillVibes from 'assets/img/chillVibes.png';
 import chinese from 'assets/img/chinese.png';
 import climate from 'assets/img/climate.png';
 import craft from 'assets/img/craft.png';
-import crystallball from 'assets/img/crystallball.png';
+import crystalball from 'assets/img/crystalball.png';
 import cycling from 'assets/img/cycling.png';
 import danceFun from 'assets/img/danceFun.png';
 import dating from 'assets/img/dating.png';
@@ -19,12 +20,12 @@ import design from 'assets/img/design.png';
 import disabled from 'assets/img/disabled.png';
 import eCommerce from 'assets/img/eCommerce.png';
 import economics from 'assets/img/economics.png';
-import education from 'assets/img/blockchain.png';
-import english from 'assets/img/blockchain.png';
-import entertainment from 'assets/img/blockchain.png';
+import education from 'assets/img/education.png';
+import english from 'assets/img/english.png';
+import entertainment from 'assets/img/entertainment.png';
 import entrepreneurship from 'assets/img/entrepreneurship.png';
 import fashion from 'assets/img/fashion.png';
-import flim from 'assets/img/flim.png';
+import film from 'assets/img/film.png';
 import finance from 'assets/img/finance.png';
 import fire from 'assets/img/fire.png';
 import fitness from 'assets/img/fitness.png';
@@ -38,51 +39,55 @@ import german from 'assets/img/german.png';
 import golf from 'assets/img/golf.png';
 import healthcare from 'assets/img/healthcare.png';
 import healthNutrition from 'assets/img/healthNutrition.png';
-import history from 'assets/img/healthNutrition.png';
-import hr from 'assets/img/healthNutrition.png';
-import indonesian from 'assets/img/healthNutrition.png';
-import japanese from 'assets/img/healthNutrition.png';
-import lgbtq from 'assets/img/healthNutrition.png';
-import marketing from 'assets/img/healthNutrition.png';
-import math from 'assets/img/healthNutrition.png';
-import millennials from 'assets/img/healthNutrition.png';
-import mobility from 'assets/img/healthNutrition.png';
-import music from 'assets/img/healthNutrition.png';
-import networking from 'assets/img/healthNutrition.png';
-import outdoor from 'assets/img/healthNutrition.png';
-import parenting from 'assets/img/healthNutrition.png';
-import pet from 'assets/img/healthNutrition.png';
-import philosophy from 'assets/img/healthNutrition.png';
-import photography from 'assets/img/healthNutrition.png';
-import physics from 'assets/img/healthNutrition.png';
-import psycholgy from 'assets/img/healthNutrition.png';
-import readingMovie from 'assets/img/healthNutrition.png';
-import realEstate from 'assets/img/healthNutrition.png';
-import robotics from 'assets/img/healthNutrition.png';
-import running from 'assets/img/healthNutrition.png';
-import saas from 'assets/img/healthNutrition.png';
-import shopping from 'assets/img/healthNutrition.png';
-import soccer from 'assets/img/healthNutrition.png';
-import space from 'assets/img/healthNutrition.png';
-import spanish from 'assets/img/healthNutrition.png';
-import startup from 'assets/img/healthNutrition.png';
-import stock from 'assets/img/healthNutrition.png';
-import streaming from 'assets/img/healthNutrition.png';
-import swim from 'assets/img/healthNutrition.png';
-import tennis from 'assets/img/healthNutrition.png';
-import theater from 'assets/img/healthNutrition.png';
-import theFuture from 'assets/img/healthNutrition.png';
-import traveling from 'assets/img/healthNutrition.png';
-import veganism from 'assets/img/healthNutrition.png';
-import ventureAngel from 'assets/img/healthNutrition.png';
-import victoryHand from 'assets/img/healthNutrition.png';
-import vrAr from 'assets/img/healthNutrition.png';
-import wedding from 'assets/img/healthNutrition.png';
-import writing from 'assets/img/healthNutrition.png';
-
-export const interestImg = {
+import history from 'assets/img/history.png';
+import hr from 'assets/img/hr.png';
+import indonesian from 'assets/img/indonesian.png';
+import japanese from 'assets/img/japanese.png';
+import lgbtq from 'assets/img/lgbtq.png';
+import marketing from 'assets/img/marketing.png';
+import math from 'assets/img/math.png';
+import millennials from 'assets/img/millennials.png';
+import mobility from 'assets/img/mobility.png';
+import music from 'assets/img/music.png';
+import networking from 'assets/img/networking.png';
+import outdoor from 'assets/img/outdoor.png';
+import parenting from 'assets/img/parenting.png';
+import pet from 'assets/img/pet.png';
+import philosophy from 'assets/img/philosophy.png';
+import photography from 'assets/img/photography.png';
+import physics from 'assets/img/physics.png';
+import politics from 'assets/img/politics.png';
+import psychology from 'assets/img/psychology.png';
+import readingMovie from 'assets/img/readingMovie.png';
+import realEstate from 'assets/img/realEstate.png';
+import robotics from 'assets/img/robotics.png';
+import running from 'assets/img/running.png';
+import saas from 'assets/img/saas.png';
+import shopping from 'assets/img/shopping.png';
+import soccer from 'assets/img/soccer.png';
+import space from 'assets/img/space.png';
+import spanish from 'assets/img/spanish.png';
+import startup from 'assets/img/startup.png';
+import stock from 'assets/img/stock.png';
+import streaming from 'assets/img/streaming.png';
+import swim from 'assets/img/swim.png';
+import tennis from 'assets/img/tennis.png';
+import theater from 'assets/img/theater.png';
+import theFuture from 'assets/img/theFuture.png';
+import traveling from 'assets/img/traveling.png';
+import veganism from 'assets/img/veganism.png';
+import ventureAngel from 'assets/img/ventureAngel.png';
+import victoryHand from 'assets/img/victoryHand.png';
+import vrAr from 'assets/img/vrAr.png';
+import wedding from 'assets/img/wedding.png';
+import writing from 'assets/img/writing.png';
+type imgListType = {
+  [key: string]: string;
+};
+export const interestImg: imgListType = {
   ai,
   animation,
+  architecture,
   art,
   babyBoomer,
   backhand,
@@ -94,7 +99,7 @@ export const interestImg = {
   chinese,
   climate,
   craft,
-  crystallball,
+  crystalball,
   cycling,
   danceFun,
   dating,
@@ -107,7 +112,7 @@ export const interestImg = {
   entertainment,
   entrepreneurship,
   fashion,
-  flim,
+  film,
   finance,
   fire,
   fitness,
@@ -138,7 +143,8 @@ export const interestImg = {
   philosophy,
   photography,
   physics,
-  psycholgy,
+  politics,
+  psychology,
   readingMovie,
   realEstate,
   robotics,

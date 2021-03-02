@@ -3,6 +3,8 @@ import { Route, Switch } from 'react-router-dom';
 import firebase from 'firebase/app';
 import Landing from 'pages/Landing';
 import { authService } from 'fbase';
+import SignUp from './pages/SignUp';
+import SignUpEmail from './pages/SignUpEmail';
 
 const AppRouter = () => {
   const [init, setInit] = useState(false);
@@ -20,6 +22,8 @@ const AppRouter = () => {
   return (
     <Switch>
       <Route path="/" exact component={Landing} />
+      <Route path="/signup" exact component={SignUp} />
+      <Route path="/signup/email" component={SignUpEmail} />
     </Switch>
   );
 };
