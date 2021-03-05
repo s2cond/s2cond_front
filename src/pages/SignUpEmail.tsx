@@ -1,4 +1,4 @@
-import React, { useRef, useState } from 'react';
+import React, { useState } from 'react';
 import styles from 'scss/pages/Landing.module.scss';
 import signupGun from 'assets/img/signupGun.png';
 import { authService } from 'fbase';
@@ -8,7 +8,8 @@ import signupYes from 'assets/img/signupYes.png';
 import signupNo from 'assets/img/signupNo.png';
 import checkValid from '../utils/checkValid';
 
-const SignUpEmail = () => {
+const SignUpEmail = ({ ...state }) => {
+  const isLogin = state.location.state.isLogin;
   let history = useHistory();
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
@@ -29,14 +30,25 @@ const SignUpEmail = () => {
     e.preventDefault();
     //create account
     if (validity) {
-      await authService
-        .createUserWithEmailAndPassword(email, password)
-        .then((userCredential) => {
-          console.log(userCredential);
-          console.log(userCredential.user?.uid);
-          history.push('/verifyphone');
-        })
-        .catch((err) => console.log(err));
+      isLogin
+        ? //로그인 작업 수행
+          await authService
+            .signInWithEmailAndPassword(email, password)
+            .then((userCredential) => {
+              console.log(userCredential);
+              console.log(userCredential.user?.uid);
+              history.push('/lounge');
+            })
+            .catch((err) => console.log(err))
+        : //회원가입 작업 수행
+          await authService
+            .createUserWithEmailAndPassword(email, password)
+            .then((userCredential) => {
+              console.log(userCredential);
+              console.log(userCredential.user?.uid);
+              history.push('/signup/verifyphone');
+            })
+            .catch((err) => console.log(err));
     }
   };
   const onPassword = (e: React.MouseEvent<HTMLButtonElement, MouseEvent>) => {
@@ -46,7 +58,7 @@ const SignUpEmail = () => {
 
   return (
     <div className={styles.landingBody}>
-      <div className="text-center text-white mt-36 mb-">
+      <div className="text-center text-white mt-36 ">
         <div className="mb-48">
           <img src={signupGun} alt="signup-gun" className="mx-auto" />
           <p className="text-2xl font-bold text-s2condLime">이메일 로그인</p>
@@ -107,7 +119,7 @@ const SignUpEmail = () => {
             </div>
             <input
               type="submit"
-              value="설정 완료"
+              value={isLogin ? '로그인 하기' : '설정 완료'}
               className={classnames(
                 'border-1 border-textBlack bg-bgBlack text-center rounded-full h-12 w-96 mb-24 font-bold focus:outline-none',
                 {

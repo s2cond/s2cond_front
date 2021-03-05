@@ -48,7 +48,7 @@ const Landing = () => {
               <div className="flex items-center border-6 border-textBlack text-sm p-1">
                 <img src={joker} alt="joker" className="h-4 ml-1 " />
                 <select className="bg-bgBlack ml-2 w-30 text-white border-0 outline-none">
-                  <option value="" disabled selected>
+                  <option value="" disabled>
                     본캐 상태
                   </option>
                   <option>구인 중</option>
@@ -77,7 +77,7 @@ const Landing = () => {
               <div className="flex items-center border-6 border-textBlack text-sm p-1 mb-3">
                 <img src={clock} alt="clock" className="h-4 ml-1 " />
                 <select className="bg-bgBlack ml-2 w-30 text-white border-0 outline-none">
-                  <option value="" disabled selected>
+                  <option value="" disabled>
                     투자시간 /주&nbsp;&nbsp;&nbsp;
                   </option>
                   <option>1 ~ 5시간</option>
@@ -90,7 +90,7 @@ const Landing = () => {
               <div className="flex align-middle border-6 border-textBlack text-sm p-1">
                 <img src={laptop} alt="laptop" className="h-4 ml-1 " />
                 <select className="bg-bgBlack ml-2 w-30 text-white border-0 outline-none">
-                  <option value="" disabled selected>
+                  <option value="" disabled>
                     선호 참여 방식
                   </option>
                   <option>자율 출퇴근</option>

@@ -5,10 +5,11 @@ import Landing from 'pages/Landing';
 import { authService } from 'fbase';
 import SignUp from './pages/SignUp';
 import SignUpEmail from './pages/SignUpEmail';
-import { useHistory } from 'react-router-dom';
+import VertifyPhone from './pages/VertifyPhone';
+import Login from './pages/Login';
+import Lounge from './pages/Lounge';
 
 const AppRouter = () => {
-  let history = useHistory();
   const [init, setInit] = useState(false);
   const [userObj, setUserObj] = useState<firebase.User | null>(null);
 
@@ -26,7 +27,10 @@ const AppRouter = () => {
     <Switch>
       <Route path="/" exact component={Landing} />
       <Route path="/signup" exact component={SignUp} />
-      <Route path="/signup/email" component={SignUpEmail} />
+      <Route path="/login" exact component={Login} />
+      <Route path="/email" exact component={SignUpEmail} />
+      <Route path="/signup/verifyphone" component={VertifyPhone} />
+      <Route path="/lounge" component={Lounge} />
     </Switch>
   );
 };
