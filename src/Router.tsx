@@ -5,8 +5,10 @@ import Landing from 'pages/Landing';
 import { authService } from 'fbase';
 import SignUp from './pages/SignUp';
 import SignUpEmail from './pages/SignUpEmail';
+import { useHistory } from 'react-router-dom';
 
 const AppRouter = () => {
+  let history = useHistory();
   const [init, setInit] = useState(false);
   const [userObj, setUserObj] = useState<firebase.User | null>(null);
 

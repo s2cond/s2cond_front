@@ -104,7 +104,7 @@ const Landing = () => {
         <div className="flex justify-center">
           <div>
             <p className="text-white text-sm mb-2">
-              ~~~~~요원 신청 마저 완료하기~~~~~
+              ~~~~~요원 신청 마저 하기~~~~~
             </p>
             <div className="flex justify-center">
               <img src={backhandImg} alt="backhand" className="w-6" />
@@ -125,7 +125,7 @@ const Landing = () => {
           <p className="text-2xl col-span-5">
             어떤 취향이에요?
             <br />
-            여러분의
+            여러분의{' '}
             <b>
               <b>관심사</b>
             </b>
@@ -147,7 +147,7 @@ const Landing = () => {
             className="group flex items-center justify-center border-1 border-s2condPink rounded-full px-16 py-6 hover:bg-s2condPink"
           >
             <div className="flex">
-              <img src={millennials} alt="apply" className="h-5" />
+              <img src={millennials} alt="apply" className="h-5 mt-1" />
               <p className="text-lg text-s2condPink font-bold ml-2 group-hover:text-white">
                 요원 신청하기
               </p>

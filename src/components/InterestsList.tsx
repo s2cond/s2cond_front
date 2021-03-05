@@ -47,15 +47,15 @@ const InterestsList: React.FC<interestsType> = ({ ...data }) => {
   return (
     <>
       <div className="mb-8 flex items-start">
-        <div className="grid grid-cols-6">
+        <div className="grid grid-cols-6 w-full">
           <div
-            className={`col-span-1 flex justify-items-start p-auto w-48 pb-1 text-2xl font-bold text-${colorValue}`}
+            className={` flex justify-items-start p-auto text-2xl font-bold text-${colorValue}`}
           >
             <p className={`h-12 border-b-12 border-${colorValue}`}>
               {data.name.kr}
             </p>
           </div>
-          <div className="col-span-5 inline-block float-right">
+          <div className="col-span-5 ">
             {Object.entries(data).map(([key, value], i) => {
               return i > 0 ? (
                 <InterestBtn
