@@ -39,7 +39,13 @@ const SignUpEmail = ({ ...state }) => {
               console.log(userCredential.user?.uid);
               history.push('/lounge');
             })
-            .catch((err) => console.log(err))
+            .catch((err) => {
+              console.log(err);
+              if (err.code === 'auth/wrong-password') {
+                console.log('비번틀림!');
+                alert('비밀번호가 틀렸습니다!');
+              }
+            })
         : //회원가입 작업 수행
           await authService
             .createUserWithEmailAndPassword(email, password)
