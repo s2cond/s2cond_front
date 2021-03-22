@@ -4,13 +4,13 @@ import styles from 'scss/pages/Landing.module.scss';
 import login from 'scss/pages/Login.module.scss';
 import starsEyes from 'assets/img/starsEyes.png';
 import { authService, firebaseInstance } from '../fbase';
-import { ConfirmationResult } from '@firebase/auth-types';
+import phoneAuth from '../utils/phoneAuth';
 
 const VertifyPhone = () => {
   const [phoneNum, setPhoneNum] = useState('');
   const [verifyNum, setVerifyNum] = useState('');
   const [time, setTime] = useState('2:00');
-  const [verify, setVerify] = useState<ConfirmationResult>();
+  const [verify, setVerify] = useState('');
 
   let recaptchaRef = useRef();
   const setTimer = (time: number) => {
@@ -47,39 +47,25 @@ const VertifyPhone = () => {
         size: 'invisible',
       },
     );
+    const provider = new firebaseInstance.auth.PhoneAuthProvider();
     const recaptchaVerifier = (window as any).recaptchaVerifier;
-    authService
-      .signInWithPhoneNumber(koreanNum, recaptchaVerifier)
+    provider
+      .verifyPhoneNumber(koreanNum, recaptchaVerifier)
       .then((e) => {
         setVerify(e);
-        // e.confirm(verifyNum)
-        //   .then((res) => {
-        //     console.log(res.user, 'user');
-        //   })
-        //   .catch((err) => {
-        //     console.log(err);
-        //   });
       })
       .catch((err) => console.log('ERR', err));
     //시간초
     setTimer(120);
   };
 
-  const onVerify = (e: React.MouseEvent<HTMLButtonElement, MouseEvent>) => {
+  const onVerify = async (
+    e: React.MouseEvent<HTMLButtonElement, MouseEvent>,
+  ) => {
     e.preventDefault();
-    if (verifyNum.length < 6) return;
-    console.log(111);
-    verify &&
-      verify
-        .confirm(verifyNum)
-        .then((res) => {
-          console.log(res.user, 'user');
-        })
-        .catch((err) => {
-          console.log(err);
-        });
-    console.log(verifyNum);
-    console.log(e);
+    if (verifyNum.length < 6 || !verify) return;
+    console.log(phoneAuth(verify, verifyNum));
+    const user = authService.currentUser;
   };
 
   useEffect(() => {
@@ -129,10 +115,19 @@ const VertifyPhone = () => {
               </button>
             </div>
             <div>
-              <p className="text-xs text-white font-light">
+              <p
+                className={classnames('text-xs text-white font-light', {
+                  hidden: !verify,
+                })}
+              >
                 인증 잔여 시간 {time}
               </p>
-              <div className="flex justify-evenly align-middle border-1 border-borderGray rounded-full h-12 w-96">
+              <div
+                className={classnames(
+                  'flex justify-evenly align-middle border-1 border-borderGray rounded-full h-12 w-96',
+                  { hidden: !verify },
+                )}
+              >
                 <input
                   type="text"
                   placeholder="인증 번호를 입력하세요"
@@ -148,7 +143,9 @@ const VertifyPhone = () => {
                   onClick={onVerify}
                   className={classnames(
                     'bg-bgBlack border-0  font-bold text-sm text-borderGray cursor-pointer px-2 focus:outline-none',
-                    { [login.sendBtn]: verifyNum.length > 5 },
+                    {
+                      [login.sendBtn]: verifyNum.length > 5 && verify,
+                    },
                   )}
                 >
                   인증
