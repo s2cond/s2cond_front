@@ -10,6 +10,8 @@ import VerifyPhone from './pages/VerifyPhone';
 import Login from './pages/Login';
 import Lounge from './pages/Lounge';
 import useLocationSearch from './hooks/useLocationSearch';
+import Terms from 'pages/Terms';
+import VerifyEmail from './pages/VerifyEmail';
 
 type Props = {
   isLoggedIn: boolean;
@@ -29,8 +31,6 @@ const ProtectedPages: React.FC<Props> = ({ isLoggedIn }) => {
   return (
     <>
       <Switch>
-        <Route path="/email" exact component={SignUpEmail} />
-        <Route path="/signup/verifyphone" component={VerifyPhone} />
         <Route path="/lounge" component={Lounge} />
       </Switch>
     </>
@@ -38,25 +38,28 @@ const ProtectedPages: React.FC<Props> = ({ isLoggedIn }) => {
 };
 
 const AppRouter = () => {
-  const [isLoggedIn, setIsLoggedIn] = useState<boolean>(false);
   const [userObj, setUserObj] = useState<firebase.User | null>(null);
 
   useEffect(() => {
     authService.onAuthStateChanged(async (user) => {
       if (user) {
-        setIsLoggedIn(true);
         await setUserObj(user);
+        //Redux로 상태관리에 추가해서 auth 관리하기
       }
     });
   }, []);
-  console.log(isLoggedIn, userObj);
+  console.log('USEROBJ:', userObj);
 
   return (
     <Switch>
       <Route path="/" exact component={Landing} />
       <Route path="/signup" exact component={SignUp} />
       <Route path="/login" exact component={Login} />
-      <ProtectedPages isLoggedIn={isLoggedIn} />
+      <Route path="/email" exact component={SignUpEmail} />
+      <Route path="/signup/verifyphone" component={VerifyPhone} />
+      <Route path="/signup/terms" component={Terms} />
+      <Route path="/signup/verifyemail" component={VerifyEmail} />
+      <ProtectedPages isLoggedIn={!!userObj} />
     </Switch>
   );
 };

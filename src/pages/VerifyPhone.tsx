@@ -5,28 +5,18 @@ import login from 'scss/pages/Login.module.scss';
 import starsEyes from 'assets/img/starsEyes.png';
 import { authService, firebaseInstance } from '../fbase';
 import phoneAuth from '../utils/phoneAuth';
+import AuthTimer from 'components/AuthTimer';
+import { useHistory } from 'react-router-dom';
 
 const VertifyPhone = () => {
   const [phoneNum, setPhoneNum] = useState('');
   const [verifyNum, setVerifyNum] = useState('');
-  const [time, setTime] = useState('2:00');
+  const [startTime, setStartTime] = useState(false);
   const [verify, setVerify] = useState('');
-
+  const user = authService.currentUser;
+  let history = useHistory();
   let recaptchaRef = useRef();
-  const setTimer = (time: number) => {
-    let min;
-    let sec;
-    setInterval(() => {
-      min = Math.floor(time / 60);
-      sec = time % 60 ? time % 60 : '00';
-      setTime(`${min}:${sec}`);
-      time--;
-      if (!time) {
-        (window as any).clearInterval(setTimer);
-        console.log('시간초과');
-      }
-    }, 1000);
-  };
+
   const handleNumberChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const regex = /^[0-9\b -]{0,13}$/;
     if (regex.test(e.target.value)) {
@@ -36,10 +26,12 @@ const VertifyPhone = () => {
   const handleVerifyChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     setVerifyNum(e.target.value);
   };
-  const onSend = (e: React.MouseEvent<HTMLButtonElement, MouseEvent>) => {
+  const OnSend = (e: React.MouseEvent<HTMLButtonElement, MouseEvent>) => {
     e.preventDefault();
     if (phoneNum.length < 13) return;
     let koreanNum = '+82' + phoneNum.slice(1);
+    let recaptchaVerifier = (window as any).recaptchaVerifier;
+    let provider = new firebaseInstance.auth.PhoneAuthProvider();
 
     (window as any).recaptchaVerifier = new firebaseInstance.auth.RecaptchaVerifier(
       'recaptcha-container',
@@ -47,16 +39,15 @@ const VertifyPhone = () => {
         size: 'invisible',
       },
     );
-    const provider = new firebaseInstance.auth.PhoneAuthProvider();
-    const recaptchaVerifier = (window as any).recaptchaVerifier;
+
     provider
       .verifyPhoneNumber(koreanNum, recaptchaVerifier)
-      .then((e) => {
-        setVerify(e);
+      .then((verificationId) => {
+        setVerify(verificationId);
       })
       .catch((err) => console.log('ERR', err));
-    //시간초
-    setTimer(120);
+    setStartTime((prev) => !prev);
+    //재전송 관련 Issue
   };
 
   const onVerify = async (
@@ -64,8 +55,25 @@ const VertifyPhone = () => {
   ) => {
     e.preventDefault();
     if (verifyNum.length < 6 || !verify) return;
-    console.log(phoneAuth(verify, verifyNum));
-    const user = authService.currentUser;
+    phoneAuth(verify, verifyNum)
+      .then((res) => {
+        if (res) {
+          console.log(res);
+          authService.currentUser
+            ?.updatePhoneNumber(res)
+            .then(() => {
+              console.log(res);
+              user?.updatePhoneNumber(res);
+            })
+            .then(() => {
+              history.push('/signup/terms');
+            });
+          // user?.updatePhoneNumber();
+        }
+        //재전송을 위한 인증ID 초기화
+        setVerify('');
+      })
+      .catch((err) => console.log('error:', err));
   };
 
   useEffect(() => {
@@ -81,8 +89,8 @@ const VertifyPhone = () => {
 
   return (
     <div className={styles.landingBody}>
-      <div className="text-center mt-36 ">
-        <div className="mb-48">
+      <div className="text-center h-screen pt-36">
+        <div className="mb-36">
           <img src={starsEyes} alt="stars-eyes" className="mx-auto" />
           <p className="text-2xl font-bold text-s2condLime">
             혹시 전화번호가 어떻게 되나요?
@@ -105,7 +113,7 @@ const VertifyPhone = () => {
               />
               <div className="border-r-1 border-borderGray w-0 h-7 my-auto" />
               <button
-                onClick={onSend}
+                onClick={OnSend}
                 className={classnames(
                   'bg-bgBlack border-0  font-bold text-sm text-borderGray cursor-pointer px-2 focus:outline-none',
                   { [login.sendBtn]: phoneNum.length > 12 },
@@ -115,17 +123,11 @@ const VertifyPhone = () => {
               </button>
             </div>
             <div>
-              <p
-                className={classnames('text-xs text-white font-light', {
-                  hidden: !verify,
-                })}
-              >
-                인증 잔여 시간 {time}
-              </p>
+              <AuthTimer startTime={startTime} verify={!!verify} />
               <div
                 className={classnames(
                   'flex justify-evenly align-middle border-1 border-borderGray rounded-full h-12 w-96',
-                  { hidden: !verify },
+                  { hidden: !!!verify },
                 )}
               >
                 <input

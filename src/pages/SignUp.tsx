@@ -36,12 +36,17 @@ const SignUp = () => {
     <div className={styles.landingBody}>
       <div className="text-center text-s2condLime mt-36 mb-24">
         <img src={signupGun} alt="signup-gun" className="mx-auto" />
-        <p className="text-lg font-bold">s2cond 요원 ID를 설정해 주세요!</p>
+        <p className="text-lg font-bold">
+          회원가입 할 계정 혹은 이메일을 선택 해 주세요
+        </p>
         <p className="font-thin">
           s2cond에 가입 하시려면 이미 가입한 지인의 초대가 필요 합니다.
           <br />
-          아직 초대장이 없으신 분은 요원 신청을 통해 <b>Waitlist</b> 에 등록
-          하실 수 있습니다.
+          아직 초대장이 없으신 분은 요원 신청을 통해{' '}
+          <b>
+            <b>Waitlist</b>
+          </b>
+          에 등록 하실 수 있습니다.
         </p>
       </div>
       <div className="flex justify-center mb-48">

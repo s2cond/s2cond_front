@@ -1,7 +1,10 @@
 import React from 'react';
+import { authService } from '../fbase';
 
 const Lounge = () => {
-  return <div>LOUNGE</div>;
+  const user = authService.currentUser;
+
+  return <div>{user?.displayName}</div>;
 };
 
 export default Lounge;

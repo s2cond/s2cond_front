@@ -52,7 +52,15 @@ const SignUpEmail = ({ ...state }) => {
             .then((userCredential) => {
               console.log(userCredential);
               console.log(userCredential.user?.uid);
-              history.push('/signup/verifyphone');
+              authService?.currentUser
+                ?.sendEmailVerification()
+                .then(() => {
+                  console.log('Email send Success');
+                })
+                .catch((err) => {
+                  console.log(err);
+                });
+              history.push('/signup/verifyemail');
             })
             .catch((err) => console.log(err));
     }
@@ -67,7 +75,9 @@ const SignUpEmail = ({ ...state }) => {
       <div className="text-center text-white mt-36 ">
         <div className="mb-48">
           <img src={signupGun} alt="signup-gun" className="mx-auto" />
-          <p className="text-2xl font-bold text-s2condLime">이메일 로그인</p>
+          <p className="text-2xl font-bold text-s2condLime">
+            {isLogin ? '이메일 로그인' : '이메일 회원가입'}
+          </p>
           {/* <p className="font-thin">
           초대장이 없으시면 요원신청을 통해 waitlist에 등록됩니다
         </p> */}
