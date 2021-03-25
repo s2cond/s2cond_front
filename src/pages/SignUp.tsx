@@ -1,4 +1,5 @@
 import React from 'react';
+import Nav from 'components/Nav';
 import styles from 'scss/pages/Landing.module.scss';
 import signupGun from 'assets/img/signupGun.png';
 import google from 'assets/img/google.png';
@@ -7,6 +8,7 @@ import email from 'assets/img/email.png';
 import { Link, useHistory } from 'react-router-dom';
 import { authService, firebaseInstance } from 'fbase';
 import { AuthProvider } from '@firebase/auth-types';
+import { SIGNING_UP } from 'constants/userStatus';
 
 const SignUp = () => {
   let history = useHistory();
@@ -34,6 +36,7 @@ const SignUp = () => {
   };
   return (
     <div className={styles.landingBody}>
+      <Nav status={SIGNING_UP} />
       <div className="text-center text-s2condLime mt-36 mb-24">
         <img src={signupGun} alt="signup-gun" className="mx-auto" />
         <p className="text-lg font-bold">

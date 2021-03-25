@@ -1,4 +1,5 @@
 import React, { useState } from 'react';
+import Nav from 'components/Nav';
 import styles from 'scss/pages/Landing.module.scss';
 import signupGun from 'assets/img/signupGun.png';
 import { authService } from 'fbase';
@@ -7,6 +8,7 @@ import classnames from 'classnames';
 import signupYes from 'assets/img/signupYes.png';
 import signupNo from 'assets/img/signupNo.png';
 import checkValid from '../utils/checkValid';
+import { SIGNING_UP } from 'constants/userStatus';
 
 const SignUpEmail = ({ ...state }) => {
   const isLogin = state.location.state.isLogin;
@@ -72,6 +74,7 @@ const SignUpEmail = ({ ...state }) => {
 
   return (
     <div className={styles.landingBody}>
+      <Nav status={SIGNING_UP} />
       <div className="text-center text-white mt-36 ">
         <div className="mb-48">
           <img src={signupGun} alt="signup-gun" className="mx-auto" />

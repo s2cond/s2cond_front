@@ -1,8 +1,10 @@
 import React, { useState } from 'react';
+import Nav from 'components/Nav';
 import classnames from 'classnames';
 import styles from 'scss/pages/Landing.module.scss';
 import termsHands from 'assets/img/termsHands.png';
 import { useHistory } from 'react-router-dom';
+import { SIGNING_UP } from 'constants/userStatus';
 
 const Terms = () => {
   const [isSign, setIsSign] = useState(false);
@@ -16,6 +18,7 @@ const Terms = () => {
   };
   return (
     <div className={styles.landingBody}>
+      <Nav status={SIGNING_UP} />
       <div className="text-center h-screen pt-36">
         <div className="mb-28">
           <img src={termsHands} alt="signup-gun" className="mx-auto" />

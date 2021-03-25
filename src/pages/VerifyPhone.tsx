@@ -1,4 +1,5 @@
 import React, { useEffect, useRef, useState } from 'react';
+import Nav from 'components/Nav';
 import classnames from 'classnames';
 import styles from 'scss/pages/Landing.module.scss';
 import login from 'scss/pages/Login.module.scss';
@@ -7,6 +8,7 @@ import { authService, firebaseInstance } from '../fbase';
 import phoneAuth from '../utils/phoneAuth';
 import AuthTimer from 'components/AuthTimer';
 import { useHistory } from 'react-router-dom';
+import { SIGNING_UP } from 'constants/userStatus';
 
 const VertifyPhone = () => {
   const [phoneNum, setPhoneNum] = useState('');
@@ -89,6 +91,7 @@ const VertifyPhone = () => {
 
   return (
     <div className={styles.landingBody}>
+      <Nav status={SIGNING_UP} />
       <div className="text-center h-screen pt-36">
         <div className="mb-36">
           <img src={starsEyes} alt="stars-eyes" className="mx-auto" />

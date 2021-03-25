@@ -1,8 +1,10 @@
 import React, { useEffect } from 'react';
+import Nav from 'components/Nav';
 import starsEyes from 'assets/img/starsEyes.png';
 import styles from 'scss/pages/Landing.module.scss';
 import { authService } from 'fbase';
 import { useHistory } from 'react-router-dom';
+import { SIGNING_UP } from 'constants/userStatus';
 
 const VerifyEmail = () => {
   const history = useHistory();
@@ -14,6 +16,7 @@ const VerifyEmail = () => {
 
   return (
     <div className={styles.landingBody}>
+      <Nav status={SIGNING_UP} />
       <div className="text-center h-screen pt-36">
         <div className="mb-36">
           <img src={starsEyes} alt="stars-eyes" className="mx-auto" />

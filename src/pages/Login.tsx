@@ -1,4 +1,5 @@
 import React from 'react';
+import Nav from 'components/Nav';
 import styles from 'scss/pages/Landing.module.scss';
 import shinyEffect from 'assets/img/shinyEffect.png';
 import welcome from 'assets/img/welcome.png';
@@ -8,6 +9,7 @@ import email from 'assets/img/email.png';
 import { authService, firebaseInstance } from 'fbase';
 import { AuthProvider } from '@firebase/auth-types';
 import { useHistory, Link } from 'react-router-dom';
+import { LOGGING_IN } from '../constants/userStatus';
 
 const Login = () => {
   let history = useHistory();
@@ -36,6 +38,7 @@ const Login = () => {
 
   return (
     <div className={styles.landingBody}>
+      <Nav status={LOGGING_IN} />
       <div className="text-center text-2xl text-s2condLime mt-36 mb-24">
         <img src={welcome} alt="welcome" className="h-20 mx-auto" />
         <div className="flex justify-center  mx-auto">

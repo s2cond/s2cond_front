@@ -1,4 +1,5 @@
 import React from 'react';
+import Nav from 'components/Nav';
 import styles from 'scss/pages/Landing.module.scss';
 import { Link } from 'react-router-dom';
 import fireImg from 'assets/img/fire.png';
@@ -12,10 +13,12 @@ import clock from 'assets/img/clock.png';
 import { interest } from 'constants/interests';
 import InterestsList from '../components/InterestsList';
 import millennials from 'assets/img/millennials.png';
+import { NONE } from '../constants/userStatus';
 
 const Landing = () => {
   return (
     <div className={styles.landingBody}>
+      <Nav status={NONE} />
       <div className="mt-48 md:mt-36 mx-56 md:mx-40 text-2xl mb-16">
         <div className="font-light mb-24">
           <div className="grid grid-cols-6 mb-3">
@@ -103,9 +106,7 @@ const Landing = () => {
         </div>
         <div className="flex justify-center">
           <div>
-            <p className="text-white text-sm mb-2">
-              ~~~~~요원 신청 마저 하기~~~~~
-            </p>
+            <p className="text-white text-sm mb-2">요원 신청 마저 하기</p>
             <div className="flex justify-center">
               <img src={backhandImg} alt="backhand" className="w-6" />
               <img src={backhandImg} alt="backhand" className="w-6" />
