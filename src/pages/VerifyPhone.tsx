@@ -5,7 +5,7 @@ import styles from 'scss/pages/Landing.module.scss';
 import buttons from 'scss/components/Buttons.module.scss';
 import login from 'scss/pages/Login.module.scss';
 import starsEyes from 'assets/img/starsEyes.png';
-import { authService, firebaseInstance } from '../fbase';
+import { authService, firebaseInstance, dbService } from '../fbase';
 import phoneAuth from '../utils/phoneAuth';
 import AuthTimer from 'components/AuthTimer';
 import { useHistory } from 'react-router-dom';
@@ -36,9 +36,12 @@ const VertifyPhone = () => {
   const onSend = (e: React.MouseEvent<HTMLButtonElement, MouseEvent>) => {
     e.preventDefault();
     if (phoneNum.length < 13) return;
-    let koreanNum = '+82' + phoneNum.slice(1);
+    let koreanNum =
+      '+82' +
+      phoneNum.slice(1, 3) +
+      phoneNum.slice(4, 8) +
+      phoneNum.slice(9, 13);
     let provider = new firebaseInstance.auth.PhoneAuthProvider();
-    grecaptcha.reset(recaptchaVerifier);
 
     (window as any).recaptchaVerifier = new firebaseInstance.auth.RecaptchaVerifier(
       'recaptcha-container',
@@ -46,21 +49,30 @@ const VertifyPhone = () => {
         size: 'invisible',
       },
     );
-
-    isAvailableNumber(phoneNum).then((res) => {
-      console.log(res);
-    });
-    provider
-      .verifyPhoneNumber(koreanNum, recaptchaVerifier)
-      .then((verificationId) => {
-        setVerify(verificationId);
-        grecaptcha.reset(recaptchaVerifier);
-      })
-      .catch((err) => {
-        console.log('ERR', err);
-        grecaptcha.reset(recaptchaVerifier);
+    console.log(koreanNum);
+    dbService
+      .collection('users')
+      .where('phoneNumber', '==', koreanNum)
+      .get()
+      .then((querySnapShot) => {
+        querySnapShot.forEach((doc) => console.log(doc.data()));
+        if (!querySnapShot.empty) {
+          console.log('already Exist', querySnapShot.docs);
+        } else {
+          console.log('사용가능한 번호입니다.');
+          provider
+            .verifyPhoneNumber(koreanNum, recaptchaVerifier)
+            .then((verificationId) => {
+              setVerify(verificationId);
+              grecaptcha.reset(recaptchaVerifier);
+            })
+            .catch((err) => {
+              console.log('ERR', err);
+              grecaptcha.reset(recaptchaVerifier);
+            });
+          setStartTime((prev) => !prev);
+        }
       });
-    setStartTime((prev) => !prev);
     //재전송 관련 Issue
   };
   const onNext = () => {
