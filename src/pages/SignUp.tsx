@@ -38,7 +38,7 @@ const SignUp = () => {
     <div className={styles.landingBody}>
       <Nav status={SIGNING_UP} />
       <div className="text-center text-s2condLime mt-36 mb-24">
-        <img src={signupGun} alt="signup-gun" className="mx-auto" />
+        <img src={signupGun} alt="signup-gun" className="w-20 h-auto mx-auto" />
         <p className="text-lg font-bold">
           회원가입 할 계정 혹은 이메일을 선택 해 주세요
         </p>

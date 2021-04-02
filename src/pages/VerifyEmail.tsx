@@ -9,9 +9,26 @@ import { SIGNING_UP } from 'constants/userStatus';
 const VerifyEmail = () => {
   const history = useHistory();
   const user = authService.currentUser;
+
+  const resendMail = () => {
+    authService?.currentUser
+      ?.sendEmailVerification()
+      .then(() => {
+        console.log('Email send Success');
+      })
+      .catch((err) => {
+        console.log(err);
+      });
+  };
+
   useEffect(() => {
     console.log(user?.emailVerified);
-    user?.emailVerified && history.push('/signup/verifyphone');
+    if (user?.emailVerified) {
+      history.push('/signup/verifyphone');
+      user.updateProfile({
+        displayName: `${user.email?.slice(0, 5)}요원`,
+      });
+    }
   }, [history, user?.emailVerified]);
 
   return (
@@ -19,7 +36,11 @@ const VerifyEmail = () => {
       <Nav status={SIGNING_UP} />
       <div className="text-center h-screen pt-36">
         <div className="mb-36">
-          <img src={starsEyes} alt="stars-eyes" className="mx-auto" />
+          <img
+            src={starsEyes}
+            alt="stars-eyes"
+            className="w-20 h-auto mx-auto"
+          />
           <p className="text-2xl font-bold text-s2condLime">
             이메일 인증을 보냈습니다
           </p>
@@ -27,7 +48,15 @@ const VerifyEmail = () => {
             {user?.email}을 확인하여 주세요
           </p>
         </div>
-        <div className="flex justify-center"></div>
+        <div className="flex justify-center">
+          <button
+            type="submit"
+            className="border-1 border-s2condLime bg-bgBlack text-center text-s2condLime rounded-full h-12 w-96 mb-24 font-bold focus:outline-none hover:bg-s2condLime  hover:text-black"
+            onClick={resendMail}
+          >
+            재전송 하기
+          </button>
+        </div>
       </div>
     </div>
   );

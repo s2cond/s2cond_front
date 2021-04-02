@@ -1,13 +1,14 @@
 import React, { useState } from 'react';
 import Nav from 'components/Nav';
 import styles from 'scss/pages/Landing.module.scss';
+import buttons from 'scss/components/Buttons.module.scss';
 import signupGun from 'assets/img/signupGun.png';
 import { authService } from 'fbase';
 import { useHistory } from 'react-router-dom';
 import classnames from 'classnames';
 import signupYes from 'assets/img/signupYes.png';
 import signupNo from 'assets/img/signupNo.png';
-import checkValid from '../utils/checkValid';
+import checkValid from 'utils/checkValid';
 import { SIGNING_UP } from 'constants/userStatus';
 
 const SignUpEmail = ({ ...state }) => {
@@ -77,7 +78,11 @@ const SignUpEmail = ({ ...state }) => {
       <Nav status={SIGNING_UP} />
       <div className="text-center text-white mt-36 ">
         <div className="mb-48">
-          <img src={signupGun} alt="signup-gun" className="mx-auto" />
+          <img
+            src={signupGun}
+            alt="signup-gun"
+            className="w-20 h-auto mx-auto"
+          />
           <p className="text-2xl font-bold text-s2condLime">
             {isLogin ? '이메일 로그인' : '이메일 회원가입'}
           </p>
@@ -108,6 +113,7 @@ const SignUpEmail = ({ ...state }) => {
                 required
                 value={password}
                 onChange={onChange}
+                pattern="[A-Za-z0-9]*"
                 className={classnames(
                   'border-1 border-textBlack bg-bgBlack text-center font-bold rounded-full h-12 w-96 focus:outline-none focus:border-s2condPink',
                   {
@@ -140,9 +146,10 @@ const SignUpEmail = ({ ...state }) => {
               type="submit"
               value={isLogin ? '로그인 하기' : '설정 완료'}
               className={classnames(
-                'border-1 border-textBlack bg-bgBlack text-center rounded-full h-12 w-96 mb-24 font-bold focus:outline-none',
+                'border-1 border-textBlack bg-bgBlack text-center rounded-full h-12 w-96 mb-24 font-bold cursor-default focus:outline-none',
                 {
-                  'border-2 border-s2condLime text-s2condLime hover:bg-s2condLime hover:text-black': validity,
+                  'border-2 hover:bg-s2condLime hover:text-black cursor-pointer': validity,
+                  [buttons.s2condLime]: validity,
                 },
               )}
             />

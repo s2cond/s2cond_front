@@ -7,7 +7,7 @@ type Props = {
   verify: boolean;
 };
 const AuthTimer: React.FC<Props> = ({ startTime, verify }) => {
-  const [time, setTime] = useState(120);
+  const [time, setTime] = useState(180);
 
   useEffect(() => {
     if (time > 0) {

@@ -1,23 +1,24 @@
 import React, { useEffect, useRef, useState } from 'react';
-import Nav from 'components/Nav';
-import classnames from 'classnames';
 import styles from 'scss/pages/Landing.module.scss';
 import buttons from 'scss/components/Buttons.module.scss';
 import login from 'scss/pages/Login.module.scss';
-import starsEyes from 'assets/img/starsEyes.png';
-import { authService, firebaseInstance, dbService } from '../fbase';
-import phoneAuth from '../utils/phoneAuth';
-import AuthTimer from 'components/AuthTimer';
+import classnames from 'classnames';
+import findAccount from 'assets/img/findAccount.png';
+import Nav from 'components/Nav';
+import { LOGGING_IN } from 'constants/userStatus';
 import { useHistory } from 'react-router-dom';
-import { SIGNING_UP } from 'constants/userStatus';
+import { authService, firebaseInstance, dbService } from 'fbase';
+import phoneAuth from 'utils/phoneAuth';
+import AuthTimer from 'components/AuthTimer';
 
-const VertifyPhone = () => {
+const FindAccount = () => {
   const [phoneNum, setPhoneNum] = useState('');
   const [verifyNum, setVerifyNum] = useState('');
   const [startTime, setStartTime] = useState(false);
+  const [propsInfo, setPropsInfo] = useState('');
   const [verify, setVerify] = useState('');
   const [isVerified, setIsVerified] = useState(false);
-  let recaptchaVerifier = (window as any).recaptchaVerifier;
+  const recaptchaVerifier = (window as any).recaptchaVerifier;
   const user = authService.currentUser;
   let history = useHistory();
   let recaptchaRef = useRef();
@@ -31,7 +32,7 @@ const VertifyPhone = () => {
   const handleVerifyChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     setVerifyNum(e.target.value);
   };
-  const onSend = (e: React.MouseEvent<HTMLButtonElement, MouseEvent>) => {
+  const OnSend = (e: React.MouseEvent<HTMLButtonElement, MouseEvent>) => {
     e.preventDefault();
     if (phoneNum.length < 13) return;
     let koreanNum =
@@ -46,11 +47,8 @@ const VertifyPhone = () => {
       .where('phoneNumber', '==', koreanNum)
       .get()
       .then((querySnapShot) => {
-        querySnapShot.forEach((doc) => console.log(doc.data()));
+        querySnapShot.forEach((doc) => setPropsInfo(doc.data().email));
         if (!querySnapShot.empty) {
-          alert('이미 존재하는 번호입니다.');
-        } else {
-          console.log('사용가능한 번호입니다.');
           provider
             .verifyPhoneNumber(koreanNum, recaptchaVerifier)
             .then((verificationId) => {
@@ -62,12 +60,10 @@ const VertifyPhone = () => {
               grecaptcha.reset(recaptchaVerifier);
             });
           setStartTime((prev) => !prev);
+        } else {
+          alert('가입되어있지 않은 번호입니다.');
         }
       });
-    //재전송 관련 Issue
-  };
-  const onNext = () => {
-    history.push('/signup/terms');
   };
 
   const onVerify = async (
@@ -77,23 +73,19 @@ const VertifyPhone = () => {
     if (verifyNum.length < 6 || !verify) return;
     phoneAuth(verify, verifyNum)
       .then((res) => {
-        user?.updatePhoneNumber(res!).then(() => {
+        if (res) {
           setIsVerified(true);
-        });
+          // user?.updatePhoneNumber();
+        }
+        //재전송을 위한 인증ID 초기화
       })
-      .catch((err) => {
-        console.log('error:', err);
-      });
+      .catch((err) => console.log('error:', err));
+  };
+  const onFindPassword = () => {
+    isVerified && history.push('/findpassword', { params: propsInfo });
   };
 
   useEffect(() => {
-    (window as any).recaptchaVerifier = new firebaseInstance.auth.RecaptchaVerifier(
-      'recaptcha-container',
-      {
-        size: 'invisible',
-      },
-    );
-
     if (phoneNum.length === 10) {
       setPhoneNum(phoneNum.replace(/(\d{3})(\d{3})(\d{4})/, '$1-$2-$3'));
     }
@@ -102,24 +94,24 @@ const VertifyPhone = () => {
         phoneNum.replace(/-/g, '').replace(/(\d{3})(\d{4})(\d{4})/, '$1-$2-$3'),
       );
     }
+    (window as any).recaptchaVerifier = new firebaseInstance.auth.RecaptchaVerifier(
+      'recaptcha-container',
+      {
+        size: 'invisible',
+      },
+    );
   }, [phoneNum]);
-
   return (
     <div className={styles.landingBody}>
-      <Nav status={SIGNING_UP} />
+      <Nav status={LOGGING_IN} />
       <div className="text-center h-screen pt-36">
-        <div className="mb-36">
+        <div className="mb-28">
           <img
-            src={starsEyes}
+            src={findAccount}
             alt="stars-eyes"
             className="w-20 h-auto mx-auto"
           />
-          <p className="text-2xl font-bold text-s2condLime">
-            혹시 전화번호가 어떻게 되나요?
-          </p>
-          <p className="font-thin text-s2condLime">
-            초대장이 없으시면 요원신청을 통해 waitlist에 등록됩니다
-          </p>
+          <p className="text-2xl mt-4 text-white">이메일/비밀번호 찾기</p>
         </div>
         <div className="flex justify-center">
           <form>
@@ -130,12 +122,12 @@ const VertifyPhone = () => {
                 pattern="[0-9]{3}-[0-9]{4}-[0-9]{4}"
                 maxLength={13}
                 onChange={handleNumberChange}
-                value={phoneNum} //phoneNum
+                value={phoneNum}
                 className="bg-bgBlack border-0 placeholder-borderGray font-bold text-sm w-56  focus:outline-none text-white"
               />
               <div className="border-r-1 border-borderGray w-0 h-7 my-auto" />
               <button
-                onClick={onSend}
+                onClick={OnSend}
                 className={classnames(
                   'bg-bgBlack border-0  font-bold text-sm text-borderGray cursor-pointer px-2 focus:outline-none',
                   { [login.sendBtn]: phoneNum.length > 12 },
@@ -179,17 +171,17 @@ const VertifyPhone = () => {
           </form>
         </div>
         <button
-          onClick={onNext}
+          onClick={onFindPassword}
           className={classnames(
-            'border-1 text-textBlack border-textBlack bg-bgBlack text-center rounded-full h-12 w-96 mt-24 font-bold cursor-default focus:outline-none',
+            ' border-1 text-textBlack border-textBlack bg-bgBlack text-center rounded-full h-12 w-96 mt-24 font-bold cursor-default focus:outline-none',
             {
-              'border-2 hover:bg-s2condLime hover:text-black cursor-pointer': isVerified,
-              [buttons.s2condLime]: isVerified,
+              'inline-block border-2 hover:bg-s2condYellow hover:text-black cursor-pointer': isVerified,
+              [buttons.s2condYellow]: isVerified,
               hidden: !!!verify,
             },
           )}
         >
-          ★요원 신청★
+          이메일 찾기
         </button>
       </div>
       <div ref={recaptchaRef.current} id="recaptcha-container"></div>
@@ -197,4 +189,4 @@ const VertifyPhone = () => {
   );
 };
 
-export default VertifyPhone;
+export default FindAccount;

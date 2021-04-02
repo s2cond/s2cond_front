@@ -4,14 +4,16 @@ import qs from 'query-string';
 import firebase from 'firebase/app';
 import Landing from 'pages/Landing';
 import { authService } from 'fbase';
-import SignUp from './pages/SignUp';
-import SignUpEmail from './pages/SignUpEmail';
-import VerifyPhone from './pages/VerifyPhone';
-import Login from './pages/Login';
-import Lounge from './pages/Lounge';
-import useLocationSearch from './hooks/useLocationSearch';
+import SignUp from 'pages/SignUp';
+import SignUpEmail from 'pages/SignUpEmail';
+import VerifyPhone from 'pages/VerifyPhone';
+import Login from 'pages/Login';
+import Lounge from 'pages/Lounge';
+import useLocationSearch from 'hooks/useLocationSearch';
 import Terms from 'pages/Terms';
-import VerifyEmail from './pages/VerifyEmail';
+import VerifyEmail from 'pages/VerifyEmail';
+import FindAccount from 'pages/FindAccount';
+import FindPassword from 'pages/FindPassword';
 
 type Props = {
   isLoggedIn: boolean;
@@ -59,6 +61,8 @@ const AppRouter = () => {
       <Route path="/signup/verifyphone" component={VerifyPhone} />
       <Route path="/signup/terms" component={Terms} />
       <Route path="/signup/verifyemail" component={VerifyEmail} />
+      <Route path="/findaccount" component={FindAccount} />
+      <Route path="/findpassword" component={FindPassword} />
       <ProtectedPages isLoggedIn={!!userObj} />
     </Switch>
   );

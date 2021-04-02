@@ -10,6 +10,8 @@ const Lounge = () => {
     <div>
       <Nav status={MEMBER} />
       {user?.displayName}
+      {user?.phoneNumber}
+      {user?.email}
     </div>
   );
 };

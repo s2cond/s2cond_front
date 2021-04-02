@@ -19,7 +19,7 @@ const Login = () => {
     const name = (event.target as HTMLButtonElement).name;
 
     let provider: AuthProvider;
-    let user;
+    // let user;
     if (name === 'google') {
       provider = new firebaseInstance.auth.GoogleAuthProvider();
     } else {
@@ -28,7 +28,7 @@ const Login = () => {
     await authService
       .signInWithPopup(provider)
       .then((res) => {
-        user = res.user;
+        // user = res.user;
         history.push('/signup/verifyphone');
       })
       .catch((err) => {
