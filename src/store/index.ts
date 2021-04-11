@@ -1,9 +1,10 @@
 import { combineReducers } from 'redux';
 import { toast } from 'store/toast';
-import { toastType } from 'models/toast';
+import { ToastType } from 'store/toast/types';
+import { ToastAction } from 'store/toast/types';
 
 export type StoreState = {
-  toast: toastType[];
+  toast: ToastType[];
 };
 
 const rootReducer = combineReducers<StoreState>({

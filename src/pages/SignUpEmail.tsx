@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useCallback, useState } from 'react';
 import Nav from 'components/Nav';
 import styles from 'scss/pages/Landing.module.scss';
 import buttons from 'scss/components/Buttons.module.scss';
@@ -10,6 +10,9 @@ import signupYes from 'assets/img/signupYes.png';
 import signupNo from 'assets/img/signupNo.png';
 import checkValid from 'utils/checkValid';
 import { SIGNING_UP } from 'constants/userStatus';
+import { showToast } from '../store/toast/action';
+import { useDispatch } from 'react-redux';
+import loginError from '../utils/loginError';
 
 const SignUpEmail = ({ ...state }) => {
   const isLogin = state.location.state.isLogin;
@@ -18,6 +21,7 @@ const SignUpEmail = ({ ...state }) => {
   const [password, setPassword] = useState('');
   const [validity, setValidity] = useState(false);
   const [passwordToggle, setPasswordToggle] = useState(true);
+  const dispatch = useDispatch();
   const onChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const {
       target: { name, value },
@@ -30,26 +34,29 @@ const SignUpEmail = ({ ...state }) => {
     }
   };
   const onSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
+    console.log('clicked!!');
+
     e.preventDefault();
     //create account
     if (validity) {
-      isLogin
-        ? //로그인 작업 수행
+      if (isLogin) {
+        //로그인 작업 수행
+        try {
           await authService
             .signInWithEmailAndPassword(email, password)
             .then((userCredential) => {
               console.log(userCredential);
               console.log(userCredential.user?.uid);
               history.push('/lounge');
-            })
-            .catch((err) => {
-              console.log(err);
-              if (err.code === 'auth/wrong-password') {
-                console.log('비번틀림!');
-                alert('비밀번호가 틀렸습니다!');
-              }
-            })
-        : //회원가입 작업 수행
+            });
+        } catch (err) {
+          console.log(err.code);
+          let text = '로그인에 오류가 있습니다.';
+          dispatch(showToast(loginError(err.code)));
+        }
+      } else {
+        //회원가입 작업 수행
+        try {
           await authService
             .createUserWithEmailAndPassword(email, password)
             .then((userCredential) => {
@@ -61,11 +68,14 @@ const SignUpEmail = ({ ...state }) => {
                   console.log('Email send Success');
                 })
                 .catch((err) => {
-                  console.log(err);
+                  throw new Error(err);
                 });
               history.push('/signup/verifyemail');
-            })
-            .catch((err) => console.log(err));
+            });
+        } catch (err) {
+          dispatch(showToast(loginError(err.code)));
+        }
+      }
     }
   };
   const onPassword = (e: React.MouseEvent<HTMLButtonElement, MouseEvent>) => {

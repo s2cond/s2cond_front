@@ -5,12 +5,13 @@ import { ToastAction, ToastType } from 'store/toast/types';
 
 const initialState: ToastType[] = [];
 
-export const toast = createReducer<ToastType[], ToastAction>(initialState, {
-  [SHOW_TOAST]: (state, { payload: text }) => [
+export const toast = createReducer(initialState, {
+  [SHOW_TOAST]: (state: ToastType[], { payload: text }) => [
     { id: nanoid(), text: text },
     ...state,
   ],
-  [DELETE_TOAST]: (state, { payload: id }) =>
+
+  [DELETE_TOAST]: (state: ToastType[], { payload: id }) =>
     state.filter((toast: ToastType) => toast.id !== id),
 });
 

@@ -27,7 +27,7 @@ const SignUp = () => {
     await authService
       .signInWithPopup(provider)
       .then((res) => {
-        user = res.user;
+        // user = res.user;
         history.push('/signup/verifyphone');
       })
       .catch((err) => {

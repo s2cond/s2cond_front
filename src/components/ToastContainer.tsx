@@ -21,6 +21,7 @@ const ToastItem: React.FC<ToastType> = ({ id, text }) => {
   const handleTransitionEnd = () =>
     status === ToastStatus.Close && deleteToastItem();
   useEffect(() => {
+    console.log('toast');
     requestAnimationFrame(() => {
       requestAnimationFrame(() => {
         setStatus(ToastStatus.Show);
@@ -41,13 +42,14 @@ const ToastItem: React.FC<ToastType> = ({ id, text }) => {
       onTransitionEnd={handleTransitionEnd}
       onClick={closeToast}
     >
-      <p className="flex-1 p-3 text-center">{text}</p>
+      <p className="flex-1 p-3 text-center font-bold text-bgBlack">{text}</p>
     </div>
   );
 };
 
 const ToastContainer = () => {
   const toasts = useSelector((state: RootState) => state.toast);
+  console.log(toasts);
   return (
     <div className={styles.container}>
       {toasts.map((toast) => (
