@@ -1,3 +1,4 @@
+import { AuthType } from 'store/auth/types';
 import { createAction } from 'typesafe-actions';
 
 export const SHOW_TOAST = 'toast/SHOW_TOAST';

@@ -1,7 +1,7 @@
 import { SHOW_TOAST, DELETE_TOAST } from 'store/toast/action';
 import { nanoid } from 'nanoid';
 import { createReducer } from 'typesafe-actions';
-import { ToastAction, ToastType } from 'store/toast/types';
+import { ToastType } from 'store/toast/types';
 
 const initialState: ToastType[] = [];
 
