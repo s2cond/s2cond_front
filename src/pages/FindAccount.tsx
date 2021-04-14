@@ -10,6 +10,9 @@ import { useHistory } from 'react-router-dom';
 import { authService, firebaseInstance, dbService } from 'fbase';
 import phoneAuth from 'utils/phoneAuth';
 import AuthTimer from 'components/AuthTimer';
+import { useDispatch } from 'react-redux';
+import { showToast } from 'store/toast/action';
+import verifyError from 'utils/verifyError';
 
 const FindAccount = () => {
   const [phoneNum, setPhoneNum] = useState('');
@@ -22,6 +25,7 @@ const FindAccount = () => {
   const user = authService.currentUser;
   let history = useHistory();
   let recaptchaRef = useRef();
+  const dispatch = useDispatch();
 
   const handleNumberChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const regex = /^[0-9\b -]{0,13}$/;
@@ -56,12 +60,12 @@ const FindAccount = () => {
               grecaptcha.reset(recaptchaVerifier);
             })
             .catch((err) => {
-              console.log('ERR', err);
+              dispatch(showToast(verifyError(err.code)));
               grecaptcha.reset(recaptchaVerifier);
             });
           setStartTime((prev) => !prev);
         } else {
-          alert('가입되어있지 않은 번호입니다.');
+          showToast('가입되어있지 않은 번호입니다.');
         }
       });
   };
@@ -79,7 +83,9 @@ const FindAccount = () => {
         }
         //재전송을 위한 인증ID 초기화
       })
-      .catch((err) => console.log('error:', err));
+      .catch((err) => {
+        dispatch(showToast(verifyError(err.code)));
+      });
   };
   const onFindPassword = () => {
     isVerified && history.push('/findpassword', { params: propsInfo });

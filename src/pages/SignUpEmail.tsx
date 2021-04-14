@@ -1,4 +1,4 @@
-import React, { useCallback, useState } from 'react';
+import React, { useState } from 'react';
 import Nav from 'components/Nav';
 import styles from 'scss/pages/Landing.module.scss';
 import buttons from 'scss/components/Buttons.module.scss';
@@ -10,9 +10,10 @@ import signupYes from 'assets/img/signupYes.png';
 import signupNo from 'assets/img/signupNo.png';
 import checkValid from 'utils/checkValid';
 import { SIGNING_UP } from 'constants/userStatus';
-import { showToast } from '../store/toast/action';
+import { showToast } from 'store/toast/action';
 import { useDispatch } from 'react-redux';
-import loginError from '../utils/loginError';
+import verifyError from 'utils/verifyError';
+import { updateAuth } from 'store/auth/action';
 
 const SignUpEmail = ({ ...state }) => {
   const isLogin = state.location.state.isLogin;
@@ -33,9 +34,8 @@ const SignUpEmail = ({ ...state }) => {
       setValidity(checkValid(value));
     }
   };
-  const onSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
-    console.log('clicked!!');
 
+  const onSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
     //create account
     if (validity) {
@@ -45,14 +45,21 @@ const SignUpEmail = ({ ...state }) => {
           await authService
             .signInWithEmailAndPassword(email, password)
             .then((userCredential) => {
-              console.log(userCredential);
-              console.log(userCredential.user?.uid);
+              let user = userCredential.user!;
+              dispatch(
+                updateAuth({
+                  uid: user.uid,
+                  email: user.email,
+                  phoneNumber: user.phoneNumber,
+                  photoUrl: user.photoURL,
+                  displayName: user.displayName,
+                }),
+              );
               history.push('/lounge');
             });
         } catch (err) {
           console.log(err.code);
-          let text = '로그인에 오류가 있습니다.';
-          dispatch(showToast(loginError(err.code)));
+          dispatch(showToast(verifyError(err.code)));
         }
       } else {
         //회원가입 작업 수행
@@ -70,10 +77,20 @@ const SignUpEmail = ({ ...state }) => {
                 .catch((err) => {
                   throw new Error(err);
                 });
+              let user = userCredential.user!;
+              dispatch(
+                updateAuth({
+                  uid: user.uid,
+                  email: user.email,
+                  phoneNumber: user.phoneNumber,
+                  photoUrl: user.photoURL,
+                  displayName: user.displayName,
+                }),
+              );
               history.push('/signup/verifyemail');
             });
         } catch (err) {
-          dispatch(showToast(loginError(err.code)));
+          dispatch(showToast(verifyError(err.code)));
         }
       }
     }

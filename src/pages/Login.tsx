@@ -6,13 +6,18 @@ import welcome from 'assets/img/welcome.png';
 import google from 'assets/img/google.png';
 import facebook from 'assets/img/facebook.png';
 import email from 'assets/img/email.png';
+import verifyError from 'utils/verifyError';
 import { authService, firebaseInstance } from 'fbase';
 import { AuthProvider } from '@firebase/auth-types';
 import { useHistory, Link } from 'react-router-dom';
-import { LOGGING_IN } from '../constants/userStatus';
+import { LOGGING_IN } from 'constants/userStatus';
+import { updateAuth } from 'store/auth/action';
+import { useDispatch } from 'react-redux';
+import { showToast } from '../store/toast/action';
 
 const Login = () => {
   let history = useHistory();
+  const dispatch = useDispatch();
   const onSocialClick = async (
     event: React.MouseEvent<HTMLButtonElement, MouseEvent>,
   ) => {
@@ -28,11 +33,22 @@ const Login = () => {
     await authService
       .signInWithPopup(provider)
       .then((res) => {
-        // user = res.user;
-        history.push('/signup/verifyphone');
+        console.log(res.user);
+        let user = res.user!;
+        dispatch(
+          updateAuth({
+            uid: user.uid,
+            email: user.email,
+            phoneNumber: user.phoneNumber,
+            photoUrl: user.photoURL,
+            displayName: user.displayName,
+            isLoggedIn: true,
+          }),
+        );
+        history.push('/lounge');
       })
       .catch((err) => {
-        console.log(err.message);
+        dispatch(showToast(verifyError(err.code)));
       });
   };
 

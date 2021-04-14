@@ -9,9 +9,12 @@ import { Link, useHistory } from 'react-router-dom';
 import { authService, firebaseInstance } from 'fbase';
 import { AuthProvider } from '@firebase/auth-types';
 import { SIGNING_UP } from 'constants/userStatus';
+import { useDispatch } from 'react-redux';
+import { updateAuth } from 'store/auth/action';
 
 const SignUp = () => {
   let history = useHistory();
+  const dispatch = useDispatch();
 
   const onSocialClick = async (
     event: React.MouseEvent<HTMLButtonElement, MouseEvent>,
@@ -27,7 +30,17 @@ const SignUp = () => {
     await authService
       .signInWithPopup(provider)
       .then((res) => {
+        let user = res.user!;
         // user = res.user;
+        dispatch(
+          updateAuth({
+            uid: user.uid,
+            email: user.email,
+            phoneNumber: user.phoneNumber,
+            photoUrl: user.photoURL,
+            displayName: user.displayName,
+          }),
+        );
         history.push('/signup/verifyphone');
       })
       .catch((err) => {

@@ -10,6 +10,9 @@ import phoneAuth from '../utils/phoneAuth';
 import AuthTimer from 'components/AuthTimer';
 import { useHistory } from 'react-router-dom';
 import { SIGNING_UP } from 'constants/userStatus';
+import { useDispatch } from 'react-redux';
+import { showToast } from '../store/toast/action';
+import verifyError from 'utils/verifyError';
 
 const VertifyPhone = () => {
   const [phoneNum, setPhoneNum] = useState('');
@@ -21,6 +24,7 @@ const VertifyPhone = () => {
   const user = authService.currentUser;
   let history = useHistory();
   let recaptchaRef = useRef();
+  const dispatch = useDispatch();
 
   const handleNumberChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const regex = /^[0-9\b -]{0,13}$/;
@@ -48,9 +52,8 @@ const VertifyPhone = () => {
       .then((querySnapShot) => {
         querySnapShot.forEach((doc) => console.log(doc.data()));
         if (!querySnapShot.empty) {
-          alert('이미 존재하는 번호입니다.');
+          showToast('이미 존재하는 번호입니다.');
         } else {
-          console.log('사용가능한 번호입니다.');
           provider
             .verifyPhoneNumber(koreanNum, recaptchaVerifier)
             .then((verificationId) => {
@@ -58,7 +61,7 @@ const VertifyPhone = () => {
               grecaptcha.reset(recaptchaVerifier);
             })
             .catch((err) => {
-              console.log('ERR', err);
+              dispatch(showToast(verifyError(err.code)));
               grecaptcha.reset(recaptchaVerifier);
             });
           setStartTime((prev) => !prev);
@@ -82,7 +85,7 @@ const VertifyPhone = () => {
         });
       })
       .catch((err) => {
-        console.log('error:', err);
+        dispatch(showToast(verifyError(err.code)));
       });
   };
 

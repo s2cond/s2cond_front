@@ -14,15 +14,16 @@ import Terms from 'pages/Terms';
 import VerifyEmail from 'pages/VerifyEmail';
 import FindAccount from 'pages/FindAccount';
 import FindPassword from 'pages/FindPassword';
+import { useSelector } from 'react-redux';
+import { RootState } from 'store';
 
-type Props = {
-  isLoggedIn: boolean;
-};
-const ProtectedPages: React.FC<Props> = ({ isLoggedIn }) => {
+const ProtectedPages = () => {
   const { pathname } = useLocation();
   const query = useLocationSearch();
-
-  if (!isLoggedIn) {
+  const auth = useSelector((state: RootState) => state.auth.user);
+  console.log(auth);
+  //React-Persist를 사용할지 미지수!
+  if (!auth.isLoggedIn) {
     const to =
       pathname !== '/'
         ? `?${qs.stringify({ ...query, redirectUrl: window.location.href })}`
@@ -40,30 +41,19 @@ const ProtectedPages: React.FC<Props> = ({ isLoggedIn }) => {
 };
 
 const AppRouter = () => {
-  const [userObj, setUserObj] = useState<firebase.User | null>(null);
-
-  useEffect(() => {
-    authService.onAuthStateChanged(async (user) => {
-      if (user) {
-        await setUserObj(user);
-        //Redux로 상태관리에 추가해서 auth 관리하기
-      }
-    });
-  }, []);
-  console.log('USEROBJ:', userObj);
-
   return (
     <Switch>
       <Route path="/" exact component={Landing} />
       <Route path="/signup" exact component={SignUp} />
       <Route path="/login" exact component={Login} />
-      <Route path="/email" exact component={SignUpEmail} />
-      <Route path="/signup/verifyphone" component={VerifyPhone} />
-      <Route path="/signup/terms" component={Terms} />
-      <Route path="/signup/verifyemail" component={VerifyEmail} />
       <Route path="/findaccount" component={FindAccount} />
       <Route path="/findpassword" component={FindPassword} />
-      <ProtectedPages isLoggedIn={!!userObj} />
+      <Route path="/email" exact component={SignUpEmail} />
+      <Route path="/signup/verifyphone" component={VerifyPhone} />
+      {/* <Route path="/signup/verifyphone" render={()=><VerifyPhone phoneNumber={auth.phoneNumber}/>}  /> */}
+      <Route path="/signup/terms" component={Terms} />
+      <Route path="/signup/verifyemail" component={VerifyEmail} />
+      <ProtectedPages />
     </Switch>
   );
 };

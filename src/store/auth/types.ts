@@ -5,12 +5,11 @@ import { interestsType } from 'constants/interests';
 export type User = {
   uid: string;
   email: string;
-  emailVerified: boolean;
   phoneNumber: string;
   photoUrl: string;
   displayName: string;
-  marketing: boolean;
-  hasInvitation: boolean;
+  // marketing: boolean;
+  // hasInvitation: boolean;
 };
 
 export type AuthType = {

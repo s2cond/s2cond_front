@@ -8,6 +8,8 @@ import { useHistory } from 'react-router-dom';
 import { SIGNING_UP } from 'constants/userStatus';
 import { dbService } from 'fbase';
 import { authService } from '../fbase';
+import { useDispatch } from 'react-redux';
+import { updateAuth } from 'store/auth/action';
 
 const Terms = () => {
   const [isSign, setIsSign] = useState(false);
@@ -17,6 +19,7 @@ const Terms = () => {
   const [isMarketing, setIsMarketing] = useState(false);
   let history = useHistory();
   const user = authService.currentUser;
+  const dispatch = useDispatch();
 
   const onAll = () => {
     let tmp = isAll;
@@ -43,6 +46,7 @@ const Terms = () => {
           })
           .then((docRef) => {
             console.log('User info updated', user);
+            dispatch(updateAuth({ isLoggedIn: true }));
           })
           .catch((err) => console.log(err));
       history.push('/lounge');
