@@ -19,14 +19,11 @@ const SignUp = () => {
   const onSocialClick = async (
     event: React.MouseEvent<HTMLButtonElement, MouseEvent>,
   ) => {
-    const name = (event.target as HTMLButtonElement).name;
-    let provider: AuthProvider;
-    let user;
-    if (name === 'google') {
-      provider = new firebaseInstance.auth.GoogleAuthProvider();
-    } else {
-      provider = new firebaseInstance.auth.FacebookAuthProvider();
-    }
+    const name = event.currentTarget.getAttribute('name');
+    let provider: AuthProvider =
+      name === 'google'
+        ? new firebaseInstance.auth.GoogleAuthProvider()
+        : new firebaseInstance.auth.FacebookAuthProvider();
     await authService
       .signInWithPopup(provider)
       .then((res) => {
