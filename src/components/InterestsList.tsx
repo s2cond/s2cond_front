@@ -2,6 +2,8 @@ import React, { useState } from 'react';
 import { interestType, interestsType } from 'constants/interests';
 import classnames from 'classnames';
 import { interestImg } from '../assets/img/index';
+import { Emoji } from 'emoji-mart';
+import { emoji } from 'assets/emoji';
 
 type colorListType = {
   [key: string]: string;
@@ -24,7 +26,8 @@ type Props = {
 
 const InterestBtn = ({ keyValue, value, color }: Props) => {
   const [clicked, setClicked] = useState(false);
-  const { [keyValue]: imgSrc } = interestImg;
+  // const { [keyValue]: imgSrc } = interestImg;
+  const imgSrc = emoji[keyValue];
   const onInterestClick = () => {
     setClicked(!clicked);
   };
@@ -36,7 +39,9 @@ const InterestBtn = ({ keyValue, value, color }: Props) => {
         { [`border-${color}`]: clicked, 'border-textBlack': !clicked },
       )}
     >
-      <img src={imgSrc} alt="interestBtn" className="mr-1 pt-1" />
+      <span className="mr-1 pt-1">
+        <Emoji emoji={imgSrc} size={12} />
+      </span>
       <p className="text-white text-base font-thin">{value.kr}</p>
     </button>
   );
