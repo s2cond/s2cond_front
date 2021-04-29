@@ -9,3 +9,8 @@ body {
   -moz-osx-font-smoothing: grayscale;
   font-size: 16px;
 }
+input:focus::-webkit-input-placeholder,
+textarea:focus::-webkit-input-placeholder {
+  /* WebKit browsers */
+  color: transparent;
+}
