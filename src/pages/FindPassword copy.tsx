@@ -9,7 +9,6 @@ import checkValid from 'utils/checkValid';
 import findPassword from 'assets/img/findPassword.png';
 import signupYes from 'assets/img/signupYes.png';
 import signupNo from 'assets/img/signupNo.png';
-import { authService } from 'fbase';
 
 const FindPassword = () => {
   const location = useLocation();

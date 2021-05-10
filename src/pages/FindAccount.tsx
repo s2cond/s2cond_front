@@ -7,12 +7,13 @@ import findAccount from 'assets/img/findAccount.png';
 import Nav from 'components/Nav';
 import { LOGGING_IN } from 'constants/userStatus';
 import { useHistory } from 'react-router-dom';
-import { authService, firebaseInstance, dbService } from 'fbase';
+import { firebaseInstance, dbService } from 'fbase';
 import phoneAuth from 'utils/phoneAuth';
 import AuthTimer from 'components/AuthTimer';
 import { useDispatch } from 'react-redux';
 import { showToast } from 'store/toast/action';
 import verifyError from 'utils/verifyError';
+import { RecaptchaVerifier } from '@firebase/auth-types';
 
 const FindAccount = () => {
   const [phoneNum, setPhoneNum] = useState('');
@@ -22,11 +23,14 @@ const FindAccount = () => {
   const [verify, setVerify] = useState('');
   const [isVerified, setIsVerified] = useState(false);
   const recaptchaVerifier = (window as any).recaptchaVerifier;
-  const user = authService.currentUser;
   let history = useHistory();
-  let recaptchaRef = useRef();
   const dispatch = useDispatch();
+  const recaptchaContainer = useRef(null);
+  let provider = new firebaseInstance.auth.PhoneAuthProvider();
 
+  const onTest = () => {
+    console.log(recaptchaVerifier);
+  };
   const handleNumberChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const regex = /^[0-9\b -]{0,13}$/;
     if (regex.test(e.target.value)) {
@@ -36,6 +40,9 @@ const FindAccount = () => {
   const handleVerifyChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     setVerifyNum(e.target.value);
   };
+  // const resetcaptcha = () => {
+  //   return { __html: '<div id="recaptcha-container" />' };
+  // };
   const OnSend = (e: React.MouseEvent<HTMLButtonElement, MouseEvent>) => {
     e.preventDefault();
     if (phoneNum.length < 13) return;
@@ -44,28 +51,31 @@ const FindAccount = () => {
       phoneNum.slice(1, 3) +
       phoneNum.slice(4, 8) +
       phoneNum.slice(9, 13);
-    let provider = new firebaseInstance.auth.PhoneAuthProvider();
-
     dbService
       .collection('users')
       .where('phoneNumber', '==', koreanNum)
       .get()
       .then((querySnapShot) => {
         querySnapShot.forEach((doc) => setPropsInfo(doc.data().email));
+        setVerify('loading...');
         if (!querySnapShot.empty) {
           provider
             .verifyPhoneNumber(koreanNum, recaptchaVerifier)
             .then((verificationId) => {
+              console.log(recaptchaVerifier);
               setVerify(verificationId);
-              grecaptcha.reset(recaptchaVerifier);
+              dispatch(showToast('코드전송 완료'));
+              grecaptcha.reset();
             })
             .catch((err) => {
+              console.log('ERR:', err);
+              setStartTime((prev) => !prev);
               dispatch(showToast(verifyError(err.code)));
-              grecaptcha.reset(recaptchaVerifier);
+              grecaptcha.reset();
             });
           setStartTime((prev) => !prev);
         } else {
-          showToast('가입되어있지 않은 번호입니다.');
+          dispatch(showToast('가입되어있지 않은 번호입니다.'));
         }
       });
   };
@@ -79,9 +89,7 @@ const FindAccount = () => {
       .then((res) => {
         if (res) {
           setIsVerified(true);
-          // user?.updatePhoneNumber();
         }
-        //재전송을 위한 인증ID 초기화
       })
       .catch((err) => {
         dispatch(showToast(verifyError(err.code)));
@@ -101,15 +109,20 @@ const FindAccount = () => {
       );
     }
     (window as any).recaptchaVerifier = new firebaseInstance.auth.RecaptchaVerifier(
-      'recaptcha-container',
+      recaptchaContainer.current,
       {
         size: 'invisible',
+        callback: function () {
+          console.log('reset!');
+          recaptchaVerifier.reset();
+        },
       },
     );
-  }, [phoneNum]);
+  }, [phoneNum, recaptchaVerifier]);
   return (
     <div className={styles.landingBody}>
       <Nav status={LOGGING_IN} />
+      <button onClick={onTest}>buttooooon</button>
       <div className="text-center h-screen pt-36">
         <div className="mb-28">
           <img
@@ -135,7 +148,7 @@ const FindAccount = () => {
               <button
                 onClick={OnSend}
                 className={classnames(
-                  'bg-bgBlack border-0  font-bold text-sm text-borderGray cursor-pointer px-2 focus:outline-none',
+                  'bg-bgBlack border-0  font-bold text-sm text-borderGray px-2 focus:outline-none cursor-default',
                   { [login.sendBtn]: phoneNum.length > 12 },
                 )}
               >
@@ -143,7 +156,11 @@ const FindAccount = () => {
               </button>
             </div>
             <div>
-              <AuthTimer startTime={startTime} verify={!!verify} />
+              <AuthTimer
+                startTime={startTime}
+                setStartTime={setStartTime}
+                verify={!!verify}
+              />
               <div
                 className={classnames(
                   'flex justify-evenly align-middle border-1 border-borderGray rounded-full h-12 w-96',
@@ -164,7 +181,7 @@ const FindAccount = () => {
                 <button
                   onClick={onVerify}
                   className={classnames(
-                    'bg-bgBlack border-0  font-bold text-sm text-borderGray cursor-pointer px-2 focus:outline-none',
+                    'bg-bgBlack border-0  font-bold text-sm text-borderGray px-2 focus:outline-none cursor-default',
                     {
                       [login.sendBtn]: verifyNum.length > 5 && verify,
                     },
@@ -179,7 +196,7 @@ const FindAccount = () => {
         <button
           onClick={onFindPassword}
           className={classnames(
-            ' border-1 text-textBlack border-textBlack bg-bgBlack text-center rounded-full h-12 w-96 mt-24 font-bold cursor-default focus:outline-none',
+            ' border-1 text-textBlack border-textBlack bg-bgBlack text-center rounded-full h-12 w-96 my-24 font-bold cursor-default focus:outline-none',
             {
               'inline-block border-2 hover:bg-s2condYellow hover:text-black cursor-pointer': isVerified,
               [buttons.s2condYellow]: isVerified,
@@ -190,7 +207,7 @@ const FindAccount = () => {
           이메일 찾기
         </button>
       </div>
-      <div ref={recaptchaRef.current} id="recaptcha-container"></div>
+      <div ref={recaptchaContainer} />
     </div>
   );
 };

@@ -2,7 +2,6 @@ import { combineReducers } from 'redux';
 import { toast } from 'store/toast';
 import { auth } from 'store/auth';
 import { ToastType } from 'store/toast/types';
-import { ToastAction } from 'store/toast/types';
 import { AuthType } from 'store/auth/types';
 
 export type StoreState = {

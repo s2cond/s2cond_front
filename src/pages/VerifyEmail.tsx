@@ -29,7 +29,7 @@ const VerifyEmail = () => {
         displayName: `${user.email?.slice(0, 5)}요원`,
       });
     }
-  }, [history, user?.emailVerified]);
+  }, [history, user, user?.emailVerified]);
 
   return (
     <div className={styles.landingBody}>

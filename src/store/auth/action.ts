@@ -1,4 +1,3 @@
-import { AuthType } from 'store/auth/types';
 import { createAction } from 'typesafe-actions';
 
 export const UPDATE_INTERESTS = 'auth/UPDATE_INTEREST';

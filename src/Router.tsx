@@ -1,9 +1,7 @@
-import React, { useEffect, useState } from 'react';
+import React from 'react';
 import { Route, Switch, useLocation, Redirect } from 'react-router-dom';
 import qs from 'query-string';
-import firebase from 'firebase/app';
 import Landing from 'pages/Landing';
-import { authService } from 'fbase';
 import SignUp from 'pages/SignUp';
 import SignUpEmail from 'pages/SignUpEmail';
 import VerifyPhone from 'pages/VerifyPhone';

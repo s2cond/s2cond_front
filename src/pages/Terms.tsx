@@ -12,7 +12,6 @@ import { useDispatch } from 'react-redux';
 import { updateAuth } from 'store/auth/action';
 
 const Terms = () => {
-  const [isSign, setIsSign] = useState(false);
   const [isAll, setIsAll] = useState(false);
   const [isTerms, setIsTerms] = useState(false);
   const [isOverAges, setIsOverAges] = useState(false);

@@ -39,8 +39,8 @@ const InterestBtn = ({ keyValue, value, color }: Props) => {
         { [`border-${color}`]: clicked, 'border-textBlack': !clicked },
       )}
     >
-      <span className="mr-1 pt-1">
-        <Emoji emoji={imgSrc} size={12} />
+      <span className="mr-1">
+        <Emoji emoji={imgSrc} size={13} />
       </span>
       <p className="text-white text-base font-thin">{value.kr}</p>
     </button>

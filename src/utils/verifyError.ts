@@ -1,4 +1,5 @@
 const verifyError = (err: string) => {
+  console.log(err);
   switch (err) {
     case 'auth/wrong-password':
       return '아이디/비밀번호가 틀렸습니다!';
@@ -28,6 +29,11 @@ const verifyError = (err: string) => {
       return '인증시간을 초과했습니다';
     case 'auth/second-factor-already-in-use':
       return 'Captcha를 불러오는데 실패했습니다. 새로 고침 해주세요';
+    // PhoneAuthProvider.credential
+    case 'auth/missing-verification-code':
+      return '인증번호가 틀렸습니다.';
+    case 'auth/missing-verification-id':
+      return '인증 ID가 다릅니다. s2cond로 문의해주세요.';
     default:
       return '인증에 오류가 있습니다.';
   }

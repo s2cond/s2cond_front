@@ -49,7 +49,7 @@ export const emoji: emojiType = {
   japanese: 'jp',
   lgbtq: 'rainbow',
   marketing: 'bar_chart',
-  math: 'triangular_rular',
+  math: 'triangular_ruler',
   millennials: 'sunglasses',
   mobility: 'car',
   music: 'musical_note',

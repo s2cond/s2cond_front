@@ -8,9 +8,7 @@ const phoneAuth = async (verify: string, verifyNum: string) => {
     );
     return result;
   } catch (err) {
-    //토스트로 대체!!
-    alert('인증에 실패했습니다.');
-    return null;
+    return err;
   }
   //   new Promise((res, rej) => {
   //     console.log(

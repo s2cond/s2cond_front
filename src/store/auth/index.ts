@@ -1,6 +1,6 @@
 import { createReducer } from 'typesafe-actions';
 import { UPDATE_AUTH, UPDATE_INTERESTS } from './action';
-import { AuthAction, AuthType } from 'store/auth/types';
+import { AuthType } from 'store/auth/types';
 
 const initialState: AuthType = {
   user: {

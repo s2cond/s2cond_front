@@ -29,7 +29,6 @@ const Login = () => {
     await authService
       .signInWithPopup(provider)
       .then((res) => {
-        console.log(res.user);
         let user = res.user!;
         dispatch(
           updateAuth({

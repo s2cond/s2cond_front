@@ -21,7 +21,6 @@ const ToastItem: React.FC<ToastType> = ({ id, text }) => {
   const handleTransitionEnd = () =>
     status === ToastStatus.Close && deleteToastItem();
   useEffect(() => {
-    console.log('toast');
     requestAnimationFrame(() => {
       requestAnimationFrame(() => {
         setStatus(ToastStatus.Show);

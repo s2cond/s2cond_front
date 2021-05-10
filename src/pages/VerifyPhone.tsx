@@ -58,11 +58,11 @@ const VertifyPhone = () => {
             .verifyPhoneNumber(koreanNum, recaptchaVerifier)
             .then((verificationId) => {
               setVerify(verificationId);
-              grecaptcha.reset(recaptchaVerifier);
+              recaptchaVerifier.clear();
             })
             .catch((err) => {
               dispatch(showToast(verifyError(err.code)));
-              grecaptcha.reset(recaptchaVerifier);
+              recaptchaVerifier.clear();
             });
           setStartTime((prev) => !prev);
         }
@@ -148,7 +148,11 @@ const VertifyPhone = () => {
               </button>
             </div>
             <div>
-              <AuthTimer startTime={startTime} verify={!!verify} />
+              <AuthTimer
+                startTime={startTime}
+                setStartTime={setStartTime}
+                verify={!!verify}
+              />
               <div
                 className={classnames(
                   'flex justify-evenly align-middle border-1 border-borderGray rounded-full h-12 w-96',

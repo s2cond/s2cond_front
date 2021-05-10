@@ -4,7 +4,6 @@ import styles from 'scss/pages/Landing.module.scss';
 import { Link } from 'react-router-dom';
 import fireImg from 'assets/img/fire.png';
 import victoryHandImg from 'assets/img/victoryHand.png';
-import backhandImg from 'assets/img/backhand.png';
 import crystalballImg from 'assets/img/crystalball.png';
 import joker from 'assets/img/joker.png';
 import laptop from 'assets/img/laptop.png';
@@ -14,6 +13,7 @@ import { interest } from 'constants/interests';
 import InterestsList from '../components/InterestsList';
 import millennials from 'assets/img/millennials.png';
 import { NONE } from '../constants/userStatus';
+import { Emoji } from 'emoji-mart';
 
 const Landing = () => {
   return (
@@ -41,7 +41,9 @@ const Landing = () => {
             </p>
             <div className="col-span-1">
               <div className="flex items-center border-6 border-textBlack text-sm p-1 mb-3">
-                <img src={nameBadge} alt="name-badge" className="ml-1" />
+                <span className="flex ml-1">
+                  <Emoji emoji={'name_badge'} size={18} />
+                </span>
                 <input
                   type="text"
                   placeholder="본캐 이름"
@@ -49,7 +51,9 @@ const Landing = () => {
                 />
               </div>
               <div className="flex items-center border-6 border-textBlack text-sm p-1">
-                <img src={joker} alt="joker" className="h-4 ml-1 " />
+                <span className="flex ml-1">
+                  <Emoji emoji={'black_joker'} size={18} />
+                </span>
                 <select className="bg-bgBlack ml-2 w-30 text-white border-0 outline-none">
                   <option value="" disabled>
                     본캐 상태
@@ -78,7 +82,9 @@ const Landing = () => {
             </p>
             <div className="col-span-1">
               <div className="flex items-center border-6 border-textBlack text-sm p-1 mb-3">
-                <img src={clock} alt="clock" className="h-4 ml-1 " />
+                <span className="flex ml-1">
+                  <Emoji emoji={'clock12'} size={18} />
+                </span>
                 <select className="bg-bgBlack ml-2 w-30 text-white border-0 outline-none">
                   <option value="" disabled>
                     투자시간 /주&nbsp;&nbsp;&nbsp;
@@ -91,7 +97,9 @@ const Landing = () => {
                 </select>
               </div>
               <div className="flex align-middle border-6 border-textBlack text-sm p-1">
-                <img src={laptop} alt="laptop" className="h-4 ml-1 " />
+                <span className="flex ml-1">
+                  <Emoji emoji={'computer'} size={18} />
+                </span>
                 <select className="bg-bgBlack ml-2 w-30 text-white border-0 outline-none">
                   <option value="" disabled>
                     선호 참여 방식
@@ -108,9 +116,9 @@ const Landing = () => {
           <div>
             <p className="text-white text-sm mb-2">요원 신청 마저 하기</p>
             <div className="flex justify-center">
-              <img src={backhandImg} alt="backhand" className="w-6" />
-              <img src={backhandImg} alt="backhand" className="w-6" />
-              <img src={backhandImg} alt="backhand" className="w-6" />
+              <Emoji emoji={'point_down'} size={28} />
+              <Emoji emoji={'point_down'} size={28} />
+              <Emoji emoji={'point_down'} size={28} />
             </div>
           </div>
         </div>

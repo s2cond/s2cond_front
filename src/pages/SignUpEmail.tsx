@@ -8,6 +8,7 @@ import { useHistory } from 'react-router-dom';
 import classnames from 'classnames';
 import signupYes from 'assets/img/signupYes.png';
 import signupNo from 'assets/img/signupNo.png';
+import { Emoji } from 'emoji-mart';
 import checkValid from 'utils/checkValid';
 import { SIGNING_UP } from 'constants/userStatus';
 import { showToast } from 'store/toast/action';
@@ -160,11 +161,12 @@ const SignUpEmail = ({ ...state }) => {
                 </p>
                 <button className="flex text-xs" onClick={onPassword}>
                   {passwordToggle ? '비밀번호 보기' : '비밀번호 숨기기'}
-                  <img
-                    src={passwordToggle ? signupYes : signupNo}
-                    alt="show-password-toggle"
-                    className="w-3 mt-1 ml-1 focus:outline-none"
-                  />
+                  <span className="flex items-center mt-1 ml-1 focus:outline-none">
+                    <Emoji
+                      emoji={passwordToggle ? 'grinning' : 'relieved'}
+                      size={11}
+                    />
+                  </span>
                 </button>
               </div>
               <br />
