@@ -70,12 +70,10 @@ const InterestsList: React.FC<landingProops> = ({
   selectedInterest,
   setSelectedInterest,
 }) => {
-  console.log(data);
   const { [data.name.en.toLowerCase()]: colorValue } = colorList;
 
   const onInterestClick = (keyValue: string, category: string) => {
     const prevInterest = selectedInterest;
-    console.log(selectedInterest);
     if (prevInterest[category]?.includes(keyValue)) {
       let index = prevInterest[category].indexOf(keyValue);
       prevInterest[category].splice(index, 1);
