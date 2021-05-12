@@ -1,12 +1,21 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { interestType, interestsType } from 'constants/interests';
 import classnames from 'classnames';
-import { interestImg } from '../assets/img/index';
 import { Emoji } from 'emoji-mart';
 import { emoji } from 'assets/emoji';
 
 type colorListType = {
   [key: string]: string;
+};
+type selectedInterestType = {
+  [category: string]: string[];
+};
+type landingProops = {
+  data: interestsType;
+  selectedInterest: selectedInterestType;
+  setSelectedInterest: React.Dispatch<
+    React.SetStateAction<selectedInterestType>
+  >;
 };
 const colorList: colorListType = {
   life: 'white',
@@ -22,9 +31,19 @@ type Props = {
   keyValue: string;
   value: interestType;
   color: string;
+  category: string;
+  selectedInterest: Object;
+  setSelectedInterest: React.Dispatch<React.SetStateAction<{}>>;
 };
 
-const InterestBtn = ({ keyValue, value, color }: Props) => {
+const InterestBtn = ({
+  category,
+  keyValue,
+  value,
+  color,
+  selectedInterest,
+  setSelectedInterest,
+}: Props) => {
   const [clicked, setClicked] = useState(false);
   // const { [keyValue]: imgSrc } = interestImg;
   const imgSrc = emoji[keyValue];
@@ -46,8 +65,29 @@ const InterestBtn = ({ keyValue, value, color }: Props) => {
     </button>
   );
 };
-const InterestsList: React.FC<interestsType> = ({ ...data }) => {
+const InterestsList: React.FC<landingProops> = ({
+  data,
+  selectedInterest,
+  setSelectedInterest,
+}) => {
+  console.log(data);
   const { [data.name.en.toLowerCase()]: colorValue } = colorList;
+
+  const onInterestClick = (keyValue: string, category: string) => {
+    const prevInterest = selectedInterest;
+    console.log(selectedInterest);
+    if (prevInterest[category]?.includes(keyValue)) {
+      let index = prevInterest[category].indexOf(keyValue);
+      prevInterest[category].splice(index, 1);
+    } else {
+      prevInterest[category].push(keyValue);
+    }
+    setSelectedInterest(prevInterest);
+    console.log(selectedInterest);
+  };
+  useEffect(() => {
+    console.log(selectedInterest);
+  }, [selectedInterest]);
 
   return (
     <>
@@ -63,19 +103,21 @@ const InterestsList: React.FC<interestsType> = ({ ...data }) => {
           <div className="col-span-5 ">
             {Object.entries(data).map(([key, value], i) => {
               return i > 0 ? (
-                <InterestBtn
-                  keyValue={key}
-                  value={value}
-                  color={colorValue}
-                  key={i}
-                />
+                <div onClick={() => onInterestClick(key, data.name.en)} key={i}>
+                  <InterestBtn
+                    category={data.name.en}
+                    keyValue={key}
+                    value={value}
+                    color={colorValue}
+                    selectedInterest={selectedInterest}
+                    setSelectedInterest={setSelectedInterest}
+                    key={i}
+                  />
+                </div>
               ) : null;
             })}
           </div>
         </div>
-      </div>
-      <div>
-        <button></button>
       </div>
     </>
   );

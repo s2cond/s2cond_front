@@ -1,21 +1,31 @@
-import React from 'react';
+import React, { useState } from 'react';
 import Nav from 'components/Nav';
 import styles from 'scss/pages/Landing.module.scss';
 import { Link } from 'react-router-dom';
 import fireImg from 'assets/img/fire.png';
 import victoryHandImg from 'assets/img/victoryHand.png';
 import crystalballImg from 'assets/img/crystalball.png';
-import joker from 'assets/img/joker.png';
-import laptop from 'assets/img/laptop.png';
-import nameBadge from 'assets/img/nameBadge.png';
-import clock from 'assets/img/clock.png';
 import { interest } from 'constants/interests';
 import InterestsList from '../components/InterestsList';
 import millennials from 'assets/img/millennials.png';
 import { NONE } from '../constants/userStatus';
 import { Emoji } from 'emoji-mart';
 
+type selectedInterestType = {
+  [category: string]: string[];
+};
+const interestInit = {
+  Life: [],
+  Identity: [],
+  Arts: [],
+  Industry: [],
+  Knowledge: [],
+  Sports: [],
+  Languages: [],
+};
 const Landing = () => {
+  const [selectedInterest, setSelectedInterest] =
+    useState<selectedInterestType>(interestInit);
   return (
     <div className={styles.landingBody}>
       <Nav status={NONE} />
@@ -145,7 +155,11 @@ const Landing = () => {
           {interest.map((data, i) => {
             return (
               <div key={i}>
-                <InterestsList {...data} />
+                <InterestsList
+                  selectedInterest={selectedInterest}
+                  setSelectedInterest={setSelectedInterest}
+                  data={data}
+                />
               </div>
             );
           })}
