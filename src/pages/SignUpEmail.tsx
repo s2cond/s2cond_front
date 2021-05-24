@@ -6,8 +6,6 @@ import signupGun from 'assets/img/signupGun.png';
 import { authService } from 'fbase';
 import { useHistory } from 'react-router-dom';
 import classnames from 'classnames';
-import signupYes from 'assets/img/signupYes.png';
-import signupNo from 'assets/img/signupNo.png';
 import { Emoji } from 'emoji-mart';
 import checkValid from 'utils/checkValid';
 import { SIGNING_UP } from 'constants/userStatus';

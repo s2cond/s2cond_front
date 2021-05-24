@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import Nav from 'components/Nav';
 import styles from 'scss/pages/Landing.module.scss';
-import { Link } from 'react-router-dom';
+import { Link, useHistory } from 'react-router-dom';
 import fireImg from 'assets/img/fire.png';
 import victoryHandImg from 'assets/img/victoryHand.png';
 import crystalballImg from 'assets/img/crystalball.png';
@@ -10,6 +10,8 @@ import InterestsList from '../components/InterestsList';
 import millennials from 'assets/img/millennials.png';
 import { NONE } from '../constants/userStatus';
 import { Emoji } from 'emoji-mart';
+import { useDispatch } from 'react-redux';
+import { updateInterest } from '../store/auth/action';
 
 type selectedInterestType = {
   [category: string]: string[];
@@ -23,9 +25,17 @@ const interestInit = {
   Sports: [],
   Languages: [],
 };
+
 const Landing = () => {
   const [selectedInterest, setSelectedInterest] =
     useState<selectedInterestType>(interestInit);
+  const history = useHistory();
+  const dispatch = useDispatch();
+  const onEnroll = () => {
+    //selectedInterest를 Redux로 보내기
+    dispatch(updateInterest(selectedInterest));
+    history.push('/signup');
+  };
   return (
     <div className={styles.landingBody}>
       <Nav status={NONE} />
@@ -165,9 +175,9 @@ const Landing = () => {
           })}
         </div>
         <div className="flex justify-center mt-16 mb-24">
-          <Link
-            to="/signup"
-            className="group flex items-center justify-center border-1 border-s2condPink rounded-full px-16 py-6 hover:bg-s2condPink"
+          <button
+            onClick={onEnroll}
+            className="group flex items-center justify-center border-1 border-s2condPink rounded-full px-16 py-6 hover:bg-s2condPink focus:outline-none"
           >
             <div className="flex">
               <img src={millennials} alt="apply" className="h-5 mt-1" />
@@ -175,7 +185,7 @@ const Landing = () => {
                 요원 신청하기
               </p>
             </div>
-          </Link>
+          </button>
         </div>
       </div>
     </div>

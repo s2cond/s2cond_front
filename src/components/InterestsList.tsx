@@ -81,11 +81,7 @@ const InterestsList: React.FC<landingProops> = ({
       prevInterest[category].push(keyValue);
     }
     setSelectedInterest(prevInterest);
-    console.log(selectedInterest);
   };
-  useEffect(() => {
-    console.log(selectedInterest);
-  }, [selectedInterest]);
 
   return (
     <>
