@@ -137,7 +137,7 @@ const SignUpEmail = ({ ...state }) => {
                 required
                 value={password}
                 onChange={onChange}
-                pattern="[A-Za-z0-9]*"
+                pattern="[A-Za-z0-9#?!@$%^&*-_]*"
                 className={classnames(
                   'border-1 border-textBlack bg-bgBlack text-center font-bold rounded-full h-12 w-96 focus:outline-none focus:border-s2condPink',
                   {

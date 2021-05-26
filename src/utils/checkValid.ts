@@ -1,5 +1,6 @@
 const checkValid = (password: string) => {
-  const reg = /^(?=.*?[A-Z])(?=.*?[a-z])(?=.*?[0-9])(?=.*?[#?!@$%^&*-_]).{8,}$/;
+  const reg =
+    /^.*(?=^.{8,20}$)(?=.*\d)(?=.*[A-Z])(?=.*[a-z])(?=.*[!@#$%^&+=]).*$/;
 
   if (reg.test(password)) {
     return true;
