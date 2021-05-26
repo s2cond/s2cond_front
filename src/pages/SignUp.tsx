@@ -6,15 +6,17 @@ import google from 'assets/img/google.png';
 import facebook from 'assets/img/facebook.png';
 import email from 'assets/img/email.png';
 import { Link, useHistory } from 'react-router-dom';
-import { authService, firebaseInstance } from 'fbase';
+import { authService, firebaseInstance, dbService } from 'fbase';
 import { AuthProvider } from '@firebase/auth-types';
 import { SIGNING_UP } from 'constants/userStatus';
 import { useDispatch } from 'react-redux';
 import { updateAuth } from 'store/auth/action';
+import { getInterest } from '../utils/getInterest';
 
 const SignUp = () => {
   let history = useHistory();
   const dispatch = useDispatch();
+  const userInterest = getInterest();
 
   const onSocialClick = async (
     event: React.MouseEvent<HTMLButtonElement, MouseEvent>,
@@ -38,6 +40,16 @@ const SignUp = () => {
             displayName: user.displayName,
           }),
         );
+        //db에 업데이트
+        dbService.collection('users').doc(user.uid).set({
+          uid: user.uid,
+          email: user.email,
+          emailVerified: user.emailVerified,
+          photoUrl: user.photoURL,
+          displayName: user.displayName,
+          hasInvitation: false,
+          interests: userInterest,
+        });
         history.push('/signup/verifyphone');
       })
       .catch((err) => {

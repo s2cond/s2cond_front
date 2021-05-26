@@ -13,7 +13,6 @@ import AuthTimer from 'components/AuthTimer';
 import { useDispatch } from 'react-redux';
 import { showToast } from 'store/toast/action';
 import verifyError from 'utils/verifyError';
-import { RecaptchaVerifier } from '@firebase/auth-types';
 
 const FindAccount = () => {
   const [phoneNum, setPhoneNum] = useState('');
@@ -108,16 +107,14 @@ const FindAccount = () => {
         phoneNum.replace(/-/g, '').replace(/(\d{3})(\d{4})(\d{4})/, '$1-$2-$3'),
       );
     }
-    (window as any).recaptchaVerifier = new firebaseInstance.auth.RecaptchaVerifier(
-      recaptchaContainer.current,
-      {
+    (window as any).recaptchaVerifier =
+      new firebaseInstance.auth.RecaptchaVerifier(recaptchaContainer.current, {
         size: 'invisible',
         callback: function () {
           console.log('reset!');
           recaptchaVerifier.reset();
         },
-      },
-    );
+      });
   }, [phoneNum, recaptchaVerifier]);
   return (
     <div className={styles.landingBody}>
@@ -198,7 +195,8 @@ const FindAccount = () => {
           className={classnames(
             ' border-1 text-textBlack border-textBlack bg-bgBlack text-center rounded-full h-12 w-96 my-24 font-bold cursor-default focus:outline-none',
             {
-              'inline-block border-2 hover:bg-s2condYellow hover:text-black cursor-pointer': isVerified,
+              'inline-block border-2 hover:bg-s2condYellow hover:text-black cursor-pointer':
+                isVerified,
               [buttons.s2condYellow]: isVerified,
               hidden: !!!verify,
             },

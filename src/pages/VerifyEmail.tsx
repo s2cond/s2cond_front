@@ -2,15 +2,18 @@ import React, { useEffect } from 'react';
 import Nav from 'components/Nav';
 import starsEyes from 'assets/img/starsEyes.png';
 import styles from 'scss/pages/Landing.module.scss';
-import { authService } from 'fbase';
+import { authService, dbService } from 'fbase';
 import { useHistory } from 'react-router-dom';
 import { NONE } from 'constants/userStatus';
 import usePageVisibility from '../hooks/usePageVisibility';
+import { getInterest } from '../utils/getInterest';
 
 const VerifyEmail = () => {
   const history = useHistory();
   const isVisible = usePageVisibility();
   const user = authService.currentUser;
+  const userInterest = getInterest();
+
   const resendMail = () => {
     authService?.currentUser
       ?.sendEmailVerification()
@@ -23,13 +26,24 @@ const VerifyEmail = () => {
   };
 
   useEffect(() => {
+    console.log('interests: ', userInterest);
     //탭 이동마다 상태를 업데이트
     isVisible && user?.reload();
     if (user?.emailVerified) {
-      history.push('/signup/verifyphone');
       user.updateProfile({
         displayName: `${user.email?.slice(0, 5)}요원`,
       });
+
+      dbService.collection('users').doc(user.uid).set({
+        uid: user.uid,
+        email: user.email,
+        emailVerified: user.emailVerified,
+        photoUrl: user.photoURL,
+        displayName: user.displayName,
+        hasInvitation: false,
+        interests: userInterest,
+      });
+      history.push('/signup/verifyphone');
     }
   }, [history, user, isVisible]);
 

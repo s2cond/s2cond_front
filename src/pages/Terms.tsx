@@ -28,20 +28,13 @@ const Terms = () => {
     setIsMarketing(!tmp);
   };
   const onCompleteSignup = () => {
-    console.log(user);
     if (isTerms && isOverAges) {
       user &&
         dbService
           .collection('users')
-          .add({
-            uid: user.uid,
-            email: user.email,
-            emailVerified: user.emailVerified,
-            phoneNumber: user.phoneNumber,
-            photoUrl: user.photoURL,
-            displayName: user.displayName,
+          .doc(user.uid)
+          .update({
             marketing: isMarketing,
-            hasInvitation: false,
           })
           .then((docRef) => {
             console.log('User info updated', user);

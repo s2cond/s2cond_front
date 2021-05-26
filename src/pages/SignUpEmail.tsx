@@ -66,8 +66,6 @@ const SignUpEmail = ({ ...state }) => {
           await authService
             .createUserWithEmailAndPassword(email, password)
             .then((userCredential) => {
-              console.log(userCredential);
-              console.log(userCredential.user?.uid);
               authService?.currentUser
                 ?.sendEmailVerification()
                 .then(() => {
@@ -134,7 +132,7 @@ const SignUpEmail = ({ ...state }) => {
             <div className="mb-16">
               <input
                 name="password"
-                type={passwordToggle ? 'password' : 'text'}
+                type={passwordToggle ? 'current-password' : 'text'}
                 placeholder="비밀번호"
                 required
                 value={password}
@@ -175,7 +173,8 @@ const SignUpEmail = ({ ...state }) => {
               className={classnames(
                 'border-1 border-textBlack bg-bgBlack text-center rounded-full h-12 w-96 mb-24 font-bold cursor-default focus:outline-none',
                 {
-                  'border-2 hover:bg-s2condLime hover:text-black cursor-pointer': validity,
+                  'border-2 hover:bg-s2condLime hover:text-black cursor-pointer':
+                    validity,
                   [buttons.s2condLime]: validity,
                 },
               )}

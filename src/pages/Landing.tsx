@@ -1,7 +1,7 @@
-import React, { useState } from 'react';
+import { useState } from 'react';
 import Nav from 'components/Nav';
 import styles from 'scss/pages/Landing.module.scss';
-import { Link, useHistory } from 'react-router-dom';
+import { useHistory } from 'react-router-dom';
 import fireImg from 'assets/img/fire.png';
 import victoryHandImg from 'assets/img/victoryHand.png';
 import crystalballImg from 'assets/img/crystalball.png';
@@ -34,6 +34,8 @@ const Landing = () => {
   const onEnroll = () => {
     //selectedInterest를 Redux로 보내기
     dispatch(updateInterest(selectedInterest));
+    //localStorage에 저장
+    localStorage.setItem('interests', JSON.stringify(selectedInterest));
     history.push('/signup');
   };
   return (

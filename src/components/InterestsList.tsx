@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react';
+import React, { useState } from 'react';
 import { interestType, interestsType } from 'constants/interests';
 import classnames from 'classnames';
 import { Emoji } from 'emoji-mart';

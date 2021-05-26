@@ -83,6 +83,12 @@ const VertifyPhone = () => {
         user?.updatePhoneNumber(res!).then(() => {
           setIsVerified(true);
         });
+        dbService
+          .collection('users')
+          .doc(user?.uid)
+          .update({ phoneNumber: phoneNum })
+          .then(() => console.log('db에 pn update'))
+          .catch((err) => console.log(err));
       })
       .catch((err) => {
         dispatch(showToast(verifyError(err.code)));
@@ -90,12 +96,10 @@ const VertifyPhone = () => {
   };
 
   useEffect(() => {
-    (window as any).recaptchaVerifier = new firebaseInstance.auth.RecaptchaVerifier(
-      'recaptcha-container',
-      {
+    (window as any).recaptchaVerifier =
+      new firebaseInstance.auth.RecaptchaVerifier('recaptcha-container', {
         size: 'invisible',
-      },
-    );
+      });
 
     if (phoneNum.length === 10) {
       setPhoneNum(phoneNum.replace(/(\d{3})(\d{3})(\d{4})/, '$1-$2-$3'));
@@ -190,7 +194,8 @@ const VertifyPhone = () => {
           className={classnames(
             'border-1 text-textBlack border-textBlack bg-bgBlack text-center rounded-full h-12 w-96 mt-24 font-bold cursor-default focus:outline-none',
             {
-              'border-2 hover:bg-s2condLime hover:text-black cursor-pointer': isVerified,
+              'border-2 hover:bg-s2condLime hover:text-black cursor-pointer':
+                isVerified,
               [buttons.s2condLime]: isVerified,
               hidden: !!!verify,
             },
