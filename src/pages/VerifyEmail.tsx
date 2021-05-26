@@ -4,12 +4,13 @@ import starsEyes from 'assets/img/starsEyes.png';
 import styles from 'scss/pages/Landing.module.scss';
 import { authService } from 'fbase';
 import { useHistory } from 'react-router-dom';
-import { SIGNING_UP } from 'constants/userStatus';
+import { NONE } from 'constants/userStatus';
+import usePageVisibility from '../hooks/usePageVisibility';
 
 const VerifyEmail = () => {
   const history = useHistory();
+  const isVisible = usePageVisibility();
   const user = authService.currentUser;
-
   const resendMail = () => {
     authService?.currentUser
       ?.sendEmailVerification()
@@ -22,18 +23,19 @@ const VerifyEmail = () => {
   };
 
   useEffect(() => {
-    console.log(user?.emailVerified);
+    //탭 이동마다 상태를 업데이트
+    isVisible && user?.reload();
     if (user?.emailVerified) {
       history.push('/signup/verifyphone');
       user.updateProfile({
         displayName: `${user.email?.slice(0, 5)}요원`,
       });
     }
-  }, [history, user, user?.emailVerified]);
+  }, [history, user, isVisible]);
 
   return (
     <div className={styles.landingBody}>
-      <Nav status={SIGNING_UP} />
+      <Nav status={NONE} />
       <div className="text-center h-screen pt-36">
         <div className="mb-36">
           <img
