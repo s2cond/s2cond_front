@@ -3,7 +3,7 @@ import Nav from 'components/Nav';
 import { authService } from '../fbase';
 import { MEMBER } from 'constants/userStatus';
 
-const Lounge = () => {
+const Home = () => {
   const user = authService.currentUser;
 
   return (
@@ -16,4 +16,4 @@ const Lounge = () => {
   );
 };
 
-export default Lounge;
+export default Home;

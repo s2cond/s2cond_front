@@ -6,7 +6,7 @@ import SignUp from 'pages/SignUp';
 import SignUpEmail from 'pages/SignUpEmail';
 import VerifyPhone from 'pages/VerifyPhone';
 import Login from 'pages/Login';
-import Lounge from 'pages/Lounge';
+import Home from 'pages/Home';
 import useLocationSearch from 'hooks/useLocationSearch';
 import Terms from 'pages/Terms';
 import VerifyEmail from 'pages/VerifyEmail';
@@ -32,7 +32,7 @@ const ProtectedPages = () => {
   return (
     <>
       <Switch>
-        <Route path="/lounge" component={Lounge} />
+        <Route path="/lounge" component={Home} />
       </Switch>
     </>
   );
