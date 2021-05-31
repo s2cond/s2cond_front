@@ -26,7 +26,6 @@ module.exports = {
       borderGray: '#777',
       black: '#000',
       white: '#fff',
-
       gray: {
         100: '#f7fafc',
         200: '#edf2f7',
@@ -167,6 +166,7 @@ module.exports = {
       68: '17rem',
       72: '18rem',
       80: '20rem',
+      96: '24rem',
       120: '30rem',
       underNav: '70rem',
     },
@@ -696,7 +696,7 @@ module.exports = {
     minWidth: ['responsive'],
     objectFit: ['responsive'],
     objectPosition: ['responsive'],
-    opacity: ['responsive', 'hover', 'focus'],
+    opacity: ['responsive', 'hover', 'focus', 'group-focus'],
     order: ['responsive'],
     outline: ['responsive', 'focus'],
     overflow: ['responsive'],

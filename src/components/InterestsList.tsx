@@ -1,10 +1,21 @@
 import React, { useState } from 'react';
 import { interestType, interestsType } from 'constants/interests';
 import classnames from 'classnames';
-import { interestImg } from '../assets/img/index';
+import { Emoji } from 'emoji-mart';
+import { emoji } from 'assets/emoji';
 
 type colorListType = {
   [key: string]: string;
+};
+type selectedInterestType = {
+  [category: string]: string[];
+};
+type landingProops = {
+  data: interestsType;
+  selectedInterest: selectedInterestType;
+  setSelectedInterest: React.Dispatch<
+    React.SetStateAction<selectedInterestType>
+  >;
 };
 const colorList: colorListType = {
   life: 'white',
@@ -20,11 +31,22 @@ type Props = {
   keyValue: string;
   value: interestType;
   color: string;
+  category: string;
+  selectedInterest: Object;
+  setSelectedInterest: React.Dispatch<React.SetStateAction<{}>>;
 };
 
-const InterestBtn = ({ keyValue, value, color }: Props) => {
+const InterestBtn = ({
+  category,
+  keyValue,
+  value,
+  color,
+  selectedInterest,
+  setSelectedInterest,
+}: Props) => {
   const [clicked, setClicked] = useState(false);
-  const { [keyValue]: imgSrc } = interestImg;
+  // const { [keyValue]: imgSrc } = interestImg;
+  const imgSrc = emoji[keyValue];
   const onInterestClick = () => {
     setClicked(!clicked);
   };
@@ -36,41 +58,60 @@ const InterestBtn = ({ keyValue, value, color }: Props) => {
         { [`border-${color}`]: clicked, 'border-textBlack': !clicked },
       )}
     >
-      <img src={imgSrc} alt="interestBtn" className="mr-1 pt-1" />
+      <span className="mr-1">
+        <Emoji emoji={imgSrc} size={13} />
+      </span>
       <p className="text-white text-base font-thin">{value.kr}</p>
     </button>
   );
 };
-const InterestsList: React.FC<interestsType> = ({ ...data }) => {
+const InterestsList: React.FC<landingProops> = ({
+  data,
+  selectedInterest,
+  setSelectedInterest,
+}) => {
   const { [data.name.en.toLowerCase()]: colorValue } = colorList;
+
+  const onInterestClick = (keyValue: string, category: string) => {
+    const prevInterest = selectedInterest;
+    if (prevInterest[category]?.includes(keyValue)) {
+      let index = prevInterest[category].indexOf(keyValue);
+      prevInterest[category].splice(index, 1);
+    } else {
+      prevInterest[category].push(keyValue);
+    }
+    setSelectedInterest(prevInterest);
+  };
 
   return (
     <>
       <div className="mb-8 flex items-start">
-        <div className="grid grid-cols-6">
+        <div className="grid grid-cols-6 w-full">
           <div
-            className={`col-span-1 flex justify-items-start p-auto w-48 pb-1 text-2xl font-bold text-${colorValue}`}
+            className={` flex justify-items-start p-auto text-2xl font-bold text-${colorValue}`}
           >
             <p className={`h-12 border-b-12 border-${colorValue}`}>
               {data.name.kr}
             </p>
           </div>
-          <div className="col-span-5 inline-block float-right">
+          <div className="col-span-5 ">
             {Object.entries(data).map(([key, value], i) => {
               return i > 0 ? (
-                <InterestBtn
-                  keyValue={key}
-                  value={value}
-                  color={colorValue}
-                  key={i}
-                />
+                <div onClick={() => onInterestClick(key, data.name.en)} key={i}>
+                  <InterestBtn
+                    category={data.name.en}
+                    keyValue={key}
+                    value={value}
+                    color={colorValue}
+                    selectedInterest={selectedInterest}
+                    setSelectedInterest={setSelectedInterest}
+                    key={i}
+                  />
+                </div>
               ) : null;
             })}
           </div>
         </div>
-      </div>
-      <div>
-        <button></button>
       </div>
     </>
   );

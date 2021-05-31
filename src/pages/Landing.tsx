@@ -1,21 +1,46 @@
-import React from 'react';
+import { useState } from 'react';
+import Nav from 'components/Nav';
 import styles from 'scss/pages/Landing.module.scss';
-import { Link } from 'react-router-dom';
+import { useHistory } from 'react-router-dom';
 import fireImg from 'assets/img/fire.png';
 import victoryHandImg from 'assets/img/victoryHand.png';
-import backhandImg from 'assets/img/backhand.png';
 import crystalballImg from 'assets/img/crystalball.png';
-import joker from 'assets/img/joker.png';
-import laptop from 'assets/img/laptop.png';
-import nameBadge from 'assets/img/nameBadge.png';
-import clock from 'assets/img/clock.png';
 import { interest } from 'constants/interests';
 import InterestsList from '../components/InterestsList';
 import millennials from 'assets/img/millennials.png';
+import { NONE } from '../constants/userStatus';
+import { Emoji } from 'emoji-mart';
+import { useDispatch } from 'react-redux';
+import { updateInterest } from '../store/auth/action';
+
+type selectedInterestType = {
+  [category: string]: string[];
+};
+const interestInit = {
+  Life: [],
+  Identity: [],
+  Arts: [],
+  Industry: [],
+  Knowledge: [],
+  Sports: [],
+  Languages: [],
+};
 
 const Landing = () => {
+  const [selectedInterest, setSelectedInterest] =
+    useState<selectedInterestType>(interestInit);
+  const history = useHistory();
+  const dispatch = useDispatch();
+  const onEnroll = () => {
+    //selectedInterest를 Redux로 보내기
+    dispatch(updateInterest(selectedInterest));
+    //localStorage에 저장
+    localStorage.setItem('interests', JSON.stringify(selectedInterest));
+    history.push('/signup');
+  };
   return (
     <div className={styles.landingBody}>
+      <Nav status={NONE} />
       <div className="mt-48 md:mt-36 mx-56 md:mx-40 text-2xl mb-16">
         <div className="font-light mb-24">
           <div className="grid grid-cols-6 mb-3">
@@ -38,7 +63,9 @@ const Landing = () => {
             </p>
             <div className="col-span-1">
               <div className="flex items-center border-6 border-textBlack text-sm p-1 mb-3">
-                <img src={nameBadge} alt="name-badge" className="ml-1" />
+                <span className="flex ml-1">
+                  <Emoji emoji={'name_badge'} size={18} />
+                </span>
                 <input
                   type="text"
                   placeholder="본캐 이름"
@@ -46,9 +73,11 @@ const Landing = () => {
                 />
               </div>
               <div className="flex items-center border-6 border-textBlack text-sm p-1">
-                <img src={joker} alt="joker" className="h-4 ml-1 " />
+                <span className="flex ml-1">
+                  <Emoji emoji={'black_joker'} size={18} />
+                </span>
                 <select className="bg-bgBlack ml-2 w-30 text-white border-0 outline-none">
-                  <option value="" disabled selected>
+                  <option value="" disabled>
                     본캐 상태
                   </option>
                   <option>구인 중</option>
@@ -75,9 +104,11 @@ const Landing = () => {
             </p>
             <div className="col-span-1">
               <div className="flex items-center border-6 border-textBlack text-sm p-1 mb-3">
-                <img src={clock} alt="clock" className="h-4 ml-1 " />
+                <span className="flex ml-1">
+                  <Emoji emoji={'clock12'} size={18} />
+                </span>
                 <select className="bg-bgBlack ml-2 w-30 text-white border-0 outline-none">
-                  <option value="" disabled selected>
+                  <option value="" disabled>
                     투자시간 /주&nbsp;&nbsp;&nbsp;
                   </option>
                   <option>1 ~ 5시간</option>
@@ -88,9 +119,11 @@ const Landing = () => {
                 </select>
               </div>
               <div className="flex align-middle border-6 border-textBlack text-sm p-1">
-                <img src={laptop} alt="laptop" className="h-4 ml-1 " />
+                <span className="flex ml-1">
+                  <Emoji emoji={'computer'} size={18} />
+                </span>
                 <select className="bg-bgBlack ml-2 w-30 text-white border-0 outline-none">
-                  <option value="" disabled selected>
+                  <option value="" disabled>
                     선호 참여 방식
                   </option>
                   <option>자율 출퇴근</option>
@@ -103,13 +136,11 @@ const Landing = () => {
         </div>
         <div className="flex justify-center">
           <div>
-            <p className="text-white text-sm mb-2">
-              ~~~~~요원 신청 마저 완료하기~~~~~
-            </p>
+            <p className="text-white text-sm mb-2">요원 신청 마저 하기</p>
             <div className="flex justify-center">
-              <img src={backhandImg} alt="backhand" className="w-6" />
-              <img src={backhandImg} alt="backhand" className="w-6" />
-              <img src={backhandImg} alt="backhand" className="w-6" />
+              <Emoji emoji={'point_down'} size={28} />
+              <Emoji emoji={'point_down'} size={28} />
+              <Emoji emoji={'point_down'} size={28} />
             </div>
           </div>
         </div>
@@ -125,7 +156,7 @@ const Landing = () => {
           <p className="text-2xl col-span-5">
             어떤 취향이에요?
             <br />
-            여러분의
+            여러분의{' '}
             <b>
               <b>관심사</b>
             </b>
@@ -136,23 +167,27 @@ const Landing = () => {
           {interest.map((data, i) => {
             return (
               <div key={i}>
-                <InterestsList {...data} />
+                <InterestsList
+                  selectedInterest={selectedInterest}
+                  setSelectedInterest={setSelectedInterest}
+                  data={data}
+                />
               </div>
             );
           })}
         </div>
         <div className="flex justify-center mt-16 mb-24">
-          <Link
-            to="/signup"
-            className="group flex items-center justify-center border-1 border-s2condPink rounded-full px-16 py-6 hover:bg-s2condPink"
+          <button
+            onClick={onEnroll}
+            className="group flex items-center justify-center border-1 border-s2condPink rounded-full px-16 py-6 hover:bg-s2condPink focus:outline-none"
           >
             <div className="flex">
-              <img src={millennials} alt="apply" className="h-5" />
+              <img src={millennials} alt="apply" className="h-5 mt-1" />
               <p className="text-lg text-s2condPink font-bold ml-2 group-hover:text-white">
                 요원 신청하기
               </p>
             </div>
-          </Link>
+          </button>
         </div>
       </div>
     </div>
