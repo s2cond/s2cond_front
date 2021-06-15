@@ -21,7 +21,8 @@ const ProtectedPages = () => {
   const auth = useSelector((state: RootState) => state.auth.user);
   console.log(auth);
   //React-Persist를 사용할지 미지수!
-  if (!auth.isLoggedIn) {
+  // home 이후에 접근하게 해줄 수 있는 척도가 필요함! 초대장이나 기타 등등..
+  if (!auth) {
     const to =
       pathname !== '/'
         ? `?${qs.stringify({ ...query, redirectUrl: window.location.href })}`
@@ -32,7 +33,7 @@ const ProtectedPages = () => {
   return (
     <>
       <Switch>
-        <Route path="/lounge" component={Home} />
+        <Route path="/home" component={Home} />
       </Switch>
     </>
   );

@@ -10,12 +10,11 @@ type Props = {
   setStartTime: React.Dispatch<React.SetStateAction<boolean>>;
 };
 const AuthTimer: React.FC<Props> = ({ startTime, verify, setStartTime }) => {
-  const [time, setTime] = useState(30);
+  const [time, setTime] = useState(180);
   const dispatch = useDispatch();
   useEffect(() => {
     if (time > 0 && startTime) {
       const Counter = setInterval(() => {
-        console.log(time);
         setTime(time - 1);
       }, 1000);
       return () => clearInterval(Counter);
@@ -23,6 +22,9 @@ const AuthTimer: React.FC<Props> = ({ startTime, verify, setStartTime }) => {
     if (time < 0) {
       dispatch(showToast('인증 시간이 만료됐습니다.'));
       setStartTime(false);
+      setTimeout(() => {
+        window.location.reload();
+      }, 3000);
     }
   }, [time, startTime, dispatch, setStartTime]);
   return (

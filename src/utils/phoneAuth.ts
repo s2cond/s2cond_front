@@ -8,6 +8,7 @@ const phoneAuth = async (verify: string, verifyNum: string) => {
     );
     return result;
   } catch (err) {
+    console.log(err);
     return err;
   }
   //   new Promise((res, rej) => {
@@ -25,4 +26,14 @@ const phoneAuth = async (verify: string, verifyNum: string) => {
   //     });
 };
 
+////
+// const phoneAuth = (verify: string, verifyNum: string) => {
+//   const result = firebaseInstance.auth.PhoneAuthProvider.credential(
+//     verify,
+//     verifyNum,
+//   );
+//   return result;
+// };
+
 export default phoneAuth;
+

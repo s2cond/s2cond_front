@@ -1,4 +1,4 @@
-import React, { useEffect, useRef, useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import Nav from 'components/Nav';
 import classnames from 'classnames';
 import styles from 'scss/pages/Landing.module.scss';
@@ -6,30 +6,32 @@ import buttons from 'scss/components/Buttons.module.scss';
 import login from 'scss/pages/Login.module.scss';
 import starsEyes from 'assets/img/starsEyes.png';
 import { authService, firebaseInstance, dbService } from '../fbase';
-import phoneAuth from '../utils/phoneAuth';
+import phoneAuth from 'utils/phoneAuth';
 import AuthTimer from 'components/AuthTimer';
 import { useHistory } from 'react-router-dom';
 import { SIGNING_UP } from 'constants/userStatus';
 import { useDispatch } from 'react-redux';
-import { showToast } from '../store/toast/action';
+import { showToast } from 'store/toast/action';
 import verifyError from 'utils/verifyError';
+import makeNationNum from 'utils/makeNationNum';
 
 const VertifyPhone = () => {
-  const [phoneNum, setPhoneNum] = useState('');
+  const storagePhoneNum = window.localStorage.getItem('phoneNumber');
+  const [phoneNum, setPhoneNum] = useState(storagePhoneNum || '');
   const [verifyNum, setVerifyNum] = useState('');
   const [startTime, setStartTime] = useState(false);
   const [verify, setVerify] = useState('');
   const [isVerified, setIsVerified] = useState(false);
-  let recaptchaVerifier = (window as any).recaptchaVerifier;
+  const recaptchaVerifier = (window as any).recaptchaVerifier;
   const user = authService.currentUser;
   let history = useHistory();
-  let recaptchaRef = useRef();
   const dispatch = useDispatch();
 
   const handleNumberChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const regex = /^[0-9\b -]{0,13}$/;
     if (regex.test(e.target.value)) {
       setPhoneNum(e.target.value);
+      window.localStorage.setItem('phoneNumber', e.target.value);
     }
   };
   const handleVerifyChange = (e: React.ChangeEvent<HTMLInputElement>) => {
@@ -38,11 +40,7 @@ const VertifyPhone = () => {
   const onSend = (e: React.MouseEvent<HTMLButtonElement, MouseEvent>) => {
     e.preventDefault();
     if (phoneNum.length < 13) return;
-    let koreanNum =
-      '+82' +
-      phoneNum.slice(1, 3) +
-      phoneNum.slice(4, 8) +
-      phoneNum.slice(9, 13);
+    let koreanNum = makeNationNum(phoneNum, '+82');
     let provider = new firebaseInstance.auth.PhoneAuthProvider();
 
     dbService
@@ -50,19 +48,23 @@ const VertifyPhone = () => {
       .where('phoneNumber', '==', koreanNum)
       .get()
       .then((querySnapShot) => {
+        console.log(querySnapShot.empty);
+
         querySnapShot.forEach((doc) => console.log(doc.data()));
         if (!querySnapShot.empty) {
           showToast('이미 존재하는 번호입니다.');
         } else {
+          setVerify('loading...');
           provider
             .verifyPhoneNumber(koreanNum, recaptchaVerifier)
             .then((verificationId) => {
               setVerify(verificationId);
-              recaptchaVerifier.clear();
+              dispatch(showToast('코드전송 완료'));
+              grecaptcha.reset();
             })
             .catch((err) => {
               dispatch(showToast(verifyError(err.code)));
-              recaptchaVerifier.clear();
+              grecaptcha.reset();
             });
           setStartTime((prev) => !prev);
         }
@@ -71,6 +73,7 @@ const VertifyPhone = () => {
   };
   const onNext = () => {
     history.push('/signup/terms');
+    localStorage.removeItem('phoneNumber');
   };
 
   const onVerify = async (
@@ -86,7 +89,7 @@ const VertifyPhone = () => {
         dbService
           .collection('users')
           .doc(user?.uid)
-          .update({ phoneNumber: phoneNum })
+          .update({ phoneNumber: makeNationNum(phoneNum, '+82') })
           .then(() => console.log('db에 pn update'))
           .catch((err) => console.log(err));
       })
@@ -192,7 +195,7 @@ const VertifyPhone = () => {
         <button
           onClick={onNext}
           className={classnames(
-            'border-1 text-textBlack border-textBlack bg-bgBlack text-center rounded-full h-12 w-96 mt-24 font-bold cursor-default focus:outline-none',
+            'border-1 text-textBlack border-textBlack bg-bgBlack text-center rounded-full h-12 w-96 my-24 font-bold cursor-default focus:outline-none',
             {
               'border-2 hover:bg-s2condLime hover:text-black cursor-pointer':
                 isVerified,
@@ -204,7 +207,7 @@ const VertifyPhone = () => {
           ★요원 신청★
         </button>
       </div>
-      <div ref={recaptchaRef.current} id="recaptcha-container"></div>
+      <div id="recaptcha-container"></div>
     </div>
   );
 };

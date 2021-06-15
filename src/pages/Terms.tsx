@@ -41,7 +41,7 @@ const Terms = () => {
             dispatch(updateAuth({ isLoggedIn: true }));
           })
           .catch((err) => console.log(err));
-      history.push('/lounge');
+      history.push('/home');
     }
   };
   return (

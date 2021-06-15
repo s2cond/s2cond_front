@@ -8,7 +8,7 @@ import { Provider } from 'react-redux';
 import ToastContainer from 'components/ToastContainer';
 import configureStore from 'store/configureStore';
 
-const store = configureStore();
+export const store = configureStore();
 
 ReactDOM.render(
   <React.StrictMode>
