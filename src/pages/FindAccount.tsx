@@ -86,12 +86,19 @@ const FindAccount = () => {
         console.log('코드전송완료');
         dispatch(showToast('코드전송 완료'));
         setVerify(verificationId);
-         waitListener(verifyButton, 'click').then(() => {
-          return firebaseInstance.auth.PhoneAuthProvider.credential(
+        console.log(verifyNum)
+          console.log(verifyNum)
+          return new Promise(function(res,rej){
+            console.log('Promise passed')
+            if(verifyNum){res("button clicked")} 
+          })
+      })
+      .then(() => {
+        console.log('verify process start')
+        return firebaseInstance.auth.PhoneAuthProvider.credential(
             verify,
             verifyNum,
           );
-        });
       })
       .then((phoneCredential) => {
         console.log('인증 성공');

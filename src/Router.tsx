@@ -14,6 +14,7 @@ import FindAccount from 'pages/FindAccount';
 import FindPassword from 'pages/FindPassword';
 import { useSelector } from 'react-redux';
 import { RootState } from 'store';
+import Profile from 'pages/Profile';
 
 const ProtectedPages = () => {
   const { pathname } = useLocation();
@@ -49,9 +50,11 @@ const AppRouter = () => {
       <Route path="/findpassword" component={FindPassword} />
       <Route path="/email" exact component={SignUpEmail} />
       <Route path="/signup/verifyphone" component={VerifyPhone} />
+      {/* <Route path="/userpage/:userId" component={MyPage} /> */}
       {/* <Route path="/signup/verifyphone" render={()=><VerifyPhone phoneNumber={auth.phoneNumber}/>}  /> */}
       <Route path="/signup/terms" component={Terms} />
       <Route path="/signup/verifyemail" component={VerifyEmail} />
+      <Route path="/profile/:id" component={Profile} />
       <ProtectedPages />
     </Switch>
   );

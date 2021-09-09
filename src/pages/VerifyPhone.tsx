@@ -79,13 +79,16 @@ const VertifyPhone = () => {
   const onVerify = async (
     e: React.MouseEvent<HTMLButtonElement, MouseEvent>,
   ) => {
+    const AuthCredential = firebaseInstance.auth.AuthCredential;
     e.preventDefault();
     if (verifyNum.length < 6 || !verify) return;
     phoneAuth(verify, verifyNum)
-      .then((res) => {
-        user?.updatePhoneNumber(res!).then(() => {
-          setIsVerified(true);
-        });
+      // 이 부분 해결해야함 any
+      .then((res: any) => {
+        res &&
+          user?.updatePhoneNumber(res).then(() => {
+            setIsVerified(true);
+          });
         dbService
           .collection('users')
           .doc(user?.uid)
