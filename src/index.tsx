@@ -9,7 +9,6 @@ import ToastContainer from 'components/ToastContainer';
 import configureStore from 'store/configureStore';
 
 export const store = configureStore();
-
 ReactDOM.render(
   <React.StrictMode>
     <Provider store={store}>

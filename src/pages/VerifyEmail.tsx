@@ -7,6 +7,7 @@ import { useHistory } from 'react-router-dom';
 import { NONE } from 'constants/userStatus';
 import usePageVisibility from '../hooks/usePageVisibility';
 import { getInterest } from '../utils/getInterest';
+import { emptyProfile } from '../constants/emptyProfile';
 
 const VerifyEmail = () => {
   const history = useHistory();
@@ -42,6 +43,8 @@ const VerifyEmail = () => {
         displayName: user.displayName,
         hasInvitation: false,
         interests: userInterest,
+        dailyMe: emptyProfile,
+        s2condMe: emptyProfile,
       });
       history.push('/signup/verifyphone');
     }

@@ -56,8 +56,7 @@ const SignUpEmail = ({ ...state }) => {
               );
               history.push('/lounge');
             });
-        } catch (err) {
-          console.log(err.code);
+        } catch (err: any) {
           dispatch(showToast(verifyError(err.code)));
         }
       } else {
@@ -86,7 +85,7 @@ const SignUpEmail = ({ ...state }) => {
               );
               history.push('/signup/verifyemail');
             });
-        } catch (err) {
+        } catch (err: any) {
           dispatch(showToast(verifyError(err.code)));
         }
       }

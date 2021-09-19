@@ -40,7 +40,7 @@ const Login = () => {
             isLoggedIn: true,
           }),
         );
-        history.push('/lounge');
+        history.push('/home');
       })
       .catch((err) => {
         dispatch(showToast(verifyError(err.code)));

@@ -12,6 +12,7 @@ import { SIGNING_UP } from 'constants/userStatus';
 import { useDispatch } from 'react-redux';
 import { updateAuth } from 'store/auth/action';
 import { getInterest } from '../utils/getInterest';
+import { emptyProfile } from '../constants/emptyProfile';
 
 const SignUp = () => {
   let history = useHistory();
@@ -49,6 +50,8 @@ const SignUp = () => {
           displayName: user.displayName,
           hasInvitation: false,
           interests: userInterest,
+          dailyMe: emptyProfile,
+          s2condMe: emptyProfile,
         });
         history.push('/signup/verifyphone');
       })
