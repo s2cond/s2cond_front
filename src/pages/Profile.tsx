@@ -1,6 +1,7 @@
 import React from 'react';
 import Nav from 'components/Nav';
 import styles from 'scss/pages/Landing.module.scss';
+import relative from 'scss/components/relativePosition.module.scss';
 import { authService } from '../fbase';
 import { MEMBER } from 'constants/userStatus';
 import { Emoji } from 'emoji-mart';
@@ -11,7 +12,6 @@ const Profile = () => {
   // uid가 링크와 같으면 mypage로 redirect
   const user = authService.currentUser;
 
-  console.log(user);
   return (
     <div className={classnames('h-screen', styles.landingBody)}>
       <Nav status={MEMBER} />
@@ -40,7 +40,7 @@ const Profile = () => {
                 <div
                   className={classnames(
                     'flex justify-center align-middle z-20 relative rounded-full bg-black p-10',
-                    styles.minusTop,
+                    relative.minusTop,
                   )}
                 >
                   <Emoji emoji="santa" set="apple" size={43} />
@@ -48,7 +48,7 @@ const Profile = () => {
                 <div
                   className={classnames(
                     'flex justify-center align-middle z-20 relative ml-15 w-15 h-15 rounded-full bg-black p-4 border-white border-2',
-                    styles.minusTopSmall,
+                    relative.minusTopSmall,
                   )}
                 >
                   <Emoji emoji="santa" set="apple" size={24} />

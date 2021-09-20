@@ -1,14 +1,16 @@
 import React, { useEffect, useState } from 'react';
 import Nav from 'components/Nav';
 import LoungeUser from 'components/LoungeUser';
-import { authService, dbService } from '../fbase';
 import { MEMBER } from 'constants/userStatus';
-import getUsers from 'utils/getUsers';
 import { profileType } from 'constants/profileTypes';
+import getUsers from 'utils/getUsers';
+import styles from 'scss/pages/Landing.module.scss';
+import classnames from 'classnames';
 
 type UserDataType = {
   dailyMe: profileType;
   s2condMe: profileType;
+  uid: string;
 };
 
 const Home = () => {
@@ -20,23 +22,33 @@ const Home = () => {
       data.forEach((user) => {
         let dailyMe: profileType = user.dailyMe;
         let s2condMe: profileType = user.s2condMe;
-        const newArr: UserDataType = { dailyMe, s2condMe };
-        setArrUsers([...arrUsers, newArr]);
+        let uid: string = user.uid;
+        const newArr: UserDataType = { dailyMe, s2condMe, uid };
+        setArrUsers((state) => [...state, newArr]);
       });
     });
   }, []);
 
   return (
-    <>
+    <div className={classnames('h-screen', styles.landingBody)}>
       <Nav status={MEMBER} />
-      {arrUsers.length ? (
-        arrUsers.map((user) => {
-          return <LoungeUser dailyMe={user.dailyMe} s2condMe={user.s2condMe} />;
-        })
-      ) : (
-        <div>loading...</div>
-      )}
-    </>
+      <div className="flex flex-wrap justify-center h-2/3 align-middle mt-24 mx-56">
+        {arrUsers.length ? (
+          arrUsers.map((user, i) => {
+            return (
+              <LoungeUser
+                dailyMe={user.dailyMe}
+                s2condMe={user.s2condMe}
+                uid={user.uid}
+                key={user.uid}
+              />
+            );
+          })
+        ) : (
+          <div>loading...</div>
+        )}
+      </div>
+    </div>
   );
 };
 

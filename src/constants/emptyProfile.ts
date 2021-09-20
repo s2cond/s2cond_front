@@ -1,12 +1,12 @@
 import {
   jobVacanciesType,
-  partitionMethodType,
+  participationMethodType,
   profileType,
 } from './profileTypes';
 
 export const emptyProfile: profileType = {
   jobVacancies: jobVacanciesType.unselected,
-  partitionMethod: partitionMethodType.unselected,
+  participationMethod: participationMethodType.unselected,
   displayName: '',
   description: '',
   picture: '',
