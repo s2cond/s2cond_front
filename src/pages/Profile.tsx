@@ -50,10 +50,13 @@ const Profile: React.FC<Props> = (props) => {
         });
     }
     setData(() => (isDaily ? state?.dailyMe : state?.s2condMe));
-  }, []);
+    console.log(data);
+  }, [state]);
+
   useEffect(() => {
     setData(() => (isDaily ? state?.dailyMe : state?.s2condMe));
   }, [isDaily]);
+
   return (
     <div className={classnames('h-screen', styles.landingBody)}>
       <Nav status={MEMBER} />
