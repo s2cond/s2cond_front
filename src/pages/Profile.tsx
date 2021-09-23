@@ -1,35 +1,89 @@
-import React from 'react';
+import React, { useEffect, useState } from 'react';
 import Nav from 'components/Nav';
-import styles from 'scss/pages/Landing.module.scss';
-import relative from 'scss/components/relativePosition.module.scss';
-import { authService } from '../fbase';
+import SocialBtn from 'components/SocialBtn';
+import { authService, dbService } from '../fbase';
 import { MEMBER } from 'constants/userStatus';
 import { Emoji } from 'emoji-mart';
+import { RouteComponentProps } from '@reach/router';
 import classnames from 'classnames';
-import SocialBtn from 'components/SocialBtn';
+import {
+  profileType,
+  jobVacanciesType,
+  jobVacanciesConv,
+  participationMethodType,
+  participationMethodConv,
+} from '../constants/profileTypes';
+import styles from 'scss/pages/Landing.module.scss';
+import relative from 'scss/components/relativePosition.module.scss';
+import { emptyProfile } from '../constants/emptyProfile';
 
-const Profile = () => {
+interface Props extends RouteComponentProps {
+  dailyMe: profileType;
+  s2condMe: profileType;
+}
+const Profile: React.FC<Props> = (props) => {
+  const [isDaily, setIsDaily] = useState(false);
+  const userState = props.location?.state as Props;
+  const [state, setState] = useState<Props | undefined>(userState || undefined);
+  const [data, setData] = useState<profileType | undefined>(emptyProfile);
+
   // uid가 링크와 같으면 mypage로 redirect
   const user = authService.currentUser;
-
+  useEffect(() => {
+    if (!state) {
+      const params = props.location?.pathname;
+      const uid = params?.substr(params.lastIndexOf('/') + 1);
+      dbService
+        .collection('users')
+        .doc(uid)
+        .get()
+        .then((doc) => {
+          if (doc.exists) {
+            let tmp = doc.data() as Props;
+            setState({ dailyMe: tmp.dailyMe, s2condMe: tmp.s2condMe });
+          } else {
+            throw new Error('User is not exists');
+          }
+        })
+        .catch((err) => {
+          console.log(err);
+        });
+    }
+    setData(() => (isDaily ? state?.dailyMe : state?.s2condMe));
+  }, []);
+  useEffect(() => {
+    setData(() => (isDaily ? state?.dailyMe : state?.s2condMe));
+  }, [isDaily]);
   return (
     <div className={classnames('h-screen', styles.landingBody)}>
       <Nav status={MEMBER} />
       <div className="flex justify-center h-2/3 align-middle mt-24 mx-56">
         {/* sidebar */}
         <div className="w-40">
-          <div className="flex justify-start align-middle p-1 pl-2 border-8 border-borderGray">
+          <button
+            className={classnames(
+              'flex justify-start align-middle w-36 py-1 pl-2 border-8 border-textBlack border-r-0 focus:outline-none',
+              { 'border-borderGray': !isDaily },
+            )}
+            onClick={() => setIsDaily(false)}
+          >
             <div>
               <Emoji emoji="santa" set="apple" size={16} />
             </div>
             <p className="text-borderGray font-bold ml-1">S2cond Me</p>
-          </div>
-          <div className="flex justify-start align-middle p-1 pl-2 border-8 border-textBlack">
+          </button>
+          <button
+            className={classnames(
+              'flex justify-start align-middle w-36 py-1 pl-2 border-8 border-textBlack border-r-0 focus:outline-none',
+              { 'border-borderGray': isDaily },
+            )}
+            onClick={() => setIsDaily(true)}
+          >
             <div>
               <Emoji emoji="santa" set="apple" size={16} />
             </div>
             <p className="text-borderGray ml-1">Daily Me</p>
-          </div>
+          </button>
         </div>
         {/* profile contents */}
         <div className="w-full h-full">
@@ -57,14 +111,17 @@ const Profile = () => {
               <div>
                 <div className="flex mt-6">
                   <div className="text-center text-xs text-white border-white border-1 py-1 px-2 mr-1 rounded-full">
-                    @구인상태
+                    @{jobVacanciesConv(data ? data.jobVacancies : 'unselected')}
                   </div>
                   <div className="text-center text-xs text-white border-white border-1 py-1 px-2 rounded-full">
-                    @선호참여방식
+                    @
+                    {participationMethodConv(
+                      data ? data.participationMethod : 'unselected',
+                    )}
                   </div>
                 </div>
                 <div className="text-white font-bold my-3">
-                  {user?.displayName} 요원
+                  {data && data.displayName} 요원
                 </div>
                 <div>
                   <SocialBtn />
@@ -75,7 +132,7 @@ const Profile = () => {
           </div>
           {/* Text 적는 곳 */}
           <div className="w-full h-1/2 border-8 border-t-0 border-borderGray text-white p-8">
-            나의 부캐에 대해 여러분의 느낌대로 표현해 주세요!
+            {data ? data.description : 'loading...'}
           </div>
         </div>
       </div>

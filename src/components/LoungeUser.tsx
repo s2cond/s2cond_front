@@ -1,17 +1,18 @@
-import { profileType } from 'constants/profileTypes';
 import React, { useState } from 'react';
+import { Link } from 'react-router-dom';
 import { Emoji } from 'emoji-mart';
-import relative from 'scss/components/relativePosition.module.scss';
 import classnames from 'classnames';
 import {
+  profileType,
   jobVacanciesConv,
   participationMethodConv,
 } from '../constants/profileTypes';
+import relative from 'scss/components/relativePosition.module.scss';
 
 type UserDataType = {
   dailyMe: profileType;
   s2condMe: profileType;
-  uid: string;
+  uid?: string;
 };
 const LoungeUser: React.FC<UserDataType> = (data) => {
   const [isDaily, setIsDaily] = useState(false);
@@ -36,7 +37,13 @@ const LoungeUser: React.FC<UserDataType> = (data) => {
         </button>
       </div>
       {/* contents */}
-      <div className="border-6 p-2 border-s2condMint w-72 h-80">
+      <Link
+        to={{
+          pathname: `/profile/${uid}`,
+          state: { s2condMe, dailyMe },
+        }}
+        className="border-6 p-2 border-s2condMint w-72 h-80"
+      >
         <div className="flex -mb-5">
           <div
             className={classnames(
@@ -68,7 +75,7 @@ const LoungeUser: React.FC<UserDataType> = (data) => {
         >
           {selectedMe.description}test area
         </div>
-      </div>
+      </Link>
     </div>
   );
 };

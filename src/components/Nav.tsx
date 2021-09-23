@@ -47,7 +47,7 @@ const Nav: React.FC<UserStatus> = ({ status }) => {
   return (
     <div className="flex justify-between items-center h-12 bg-textBlack">
       <Link to="/" className="md:ml-40 ml-56 text-white">
-        Logo
+        Logo!
       </Link>
       <NavMainBtn status={status} />
     </div>

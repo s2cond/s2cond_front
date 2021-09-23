@@ -12,27 +12,27 @@ export enum participationMethodType {
   unselected = '상관 없음',
 }
 
-export const jobVacanciesConv = (key: jobVacanciesType) => {
+export const jobVacanciesConv = (key: string) => {
   switch (key) {
-    case jobVacanciesType.lookingJob:
+    case 'lookingJob':
       return '구인중';
-    case jobVacanciesType.preparingMove:
+    case 'preparingMove':
       return '이직 준비중';
-    case jobVacanciesType.proNjob:
+    case 'proNjob':
       return '프로 N잡러';
     default:
       return '해당 사항 없음';
   }
 };
-export const participationMethodConv = (key: participationMethodType) => {
+export const participationMethodConv = (key: string) => {
   switch (key) {
-    case participationMethodType.remote:
+    case 'remote':
       return '원격 근무';
-    case participationMethodType.fullTime:
+    case 'fullTime':
       return '풀타임';
-    case participationMethodType.partTime:
+    case 'partTime':
       return '파트타임';
-    case participationMethodType.selfCommuting:
+    case 'selfCommuting':
       return '자율 출퇴근';
     default:
       return '상관없음';
