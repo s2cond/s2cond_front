@@ -16,6 +16,7 @@ import {
 import styles from 'scss/pages/Landing.module.scss';
 import relative from 'scss/components/relativePosition.module.scss';
 import { emptyProfile } from '../constants/emptyProfile';
+import setBorderColor from '../utils/setBorderColor';
 
 interface Props extends RouteComponentProps {
   dailyMe: profileType;
@@ -50,7 +51,6 @@ const Profile: React.FC<Props> = (props) => {
         });
     }
     setData(() => (isDaily ? state?.dailyMe : state?.s2condMe));
-    console.log(data);
   }, [state]);
 
   useEffect(() => {
@@ -65,8 +65,11 @@ const Profile: React.FC<Props> = (props) => {
         <div className="w-40">
           <button
             className={classnames(
-              'flex justify-start align-middle w-36 py-1 pl-2 border-8 border-textBlack border-r-0 focus:outline-none',
-              { 'border-borderGray': !isDaily },
+              `flex justify-start align-middle w-36 py-1 pl-2 border-8 border-r-0 focus:outline-none `,
+              {
+                [`${setBorderColor(data?.jobVacancies as string)}`]: !isDaily,
+                'border-textBlack': isDaily,
+              },
             )}
             onClick={() => setIsDaily(false)}
           >
@@ -77,8 +80,11 @@ const Profile: React.FC<Props> = (props) => {
           </button>
           <button
             className={classnames(
-              'flex justify-start align-middle w-36 py-1 pl-2 border-8 border-textBlack border-r-0 focus:outline-none',
-              { 'border-borderGray': isDaily },
+              `flex justify-start align-middle w-36 py-1 pl-2 border-8 border-r-0 focus:outline-none`,
+              {
+                [`${setBorderColor(data?.jobVacancies as string)}`]: isDaily,
+                'border-textBlack': !isDaily,
+              },
             )}
             onClick={() => setIsDaily(true)}
           >
@@ -90,7 +96,11 @@ const Profile: React.FC<Props> = (props) => {
         </div>
         {/* profile contents */}
         <div className="w-full h-full">
-          <div className="w-full border-8 border-borderGray overflow-visible ">
+          <div
+            className={`w-full border-8 ${setBorderColor(
+              data?.jobVacancies as string,
+            )} overflow-visible `}
+          >
             <div className="flex justify-start align-middle overflow-visible z-10 -mb-6">
               {/* Profile Info */}
               <div className="ml-5 mr-12">
@@ -134,7 +144,11 @@ const Profile: React.FC<Props> = (props) => {
             <div>{/* Profile description */}</div>
           </div>
           {/* Text 적는 곳 */}
-          <div className="w-full h-1/2 border-8 border-t-0 border-borderGray text-white p-8">
+          <div
+            className={`w-full h-1/2 border-8 border-t-0 ${setBorderColor(
+              data?.jobVacancies as string,
+            )} text-white p-8`}
+          >
             {data ? data.description : 'loading...'}
           </div>
         </div>
