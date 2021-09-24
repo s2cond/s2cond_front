@@ -30,6 +30,10 @@ const Profile: React.FC<Props> = (props) => {
 
   // uid가 링크와 같으면 mypage로 redirect
   const user = authService.currentUser;
+  if (props.location?.pathname.split('/')[2] === user?.uid) {
+    window.location.href = `/mypage`;
+  }
+
   useEffect(() => {
     if (!state) {
       const params = props.location?.pathname;
